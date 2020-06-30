@@ -1,0 +1,35 @@
+<th:block xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <th:block sec:authorize="isAnonymous()">
+        <nav class="navbar navbar-expand-xl  rounded">
+            <a class="navbar-brand" th:href="@{/home}">
+                <img src="/img/coffee_nav.jpg" class="img-nav">
+            </a>
+            <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto">
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link d-flex" th:href="@{/users/login}">
+                            <span>Login</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex" th:href="@{/users/register}">
+                            <span>Register</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        </div>
+        </div>
+
+    </th:block>
+</th:block>
+
