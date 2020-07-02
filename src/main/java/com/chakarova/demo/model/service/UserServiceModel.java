@@ -3,13 +3,14 @@ package com.chakarova.demo.model.service;
 import com.chakarova.demo.model.entity.Role;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Set;
 
 public class UserServiceModel extends BaseServiceModel{
     private String username;
     private String password;
     private String email;
-    private Integer age;
+    private LocalDate birthDate;
     private String address;
     private BigDecimal salary;
     private BigDecimal bonus;
@@ -43,13 +44,6 @@ public class UserServiceModel extends BaseServiceModel{
         this.email = email;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 
     public String getAddress() {
         return address;
@@ -81,5 +75,13 @@ public class UserServiceModel extends BaseServiceModel{
 
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }

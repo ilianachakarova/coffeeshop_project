@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">>
+
+<head>
+   <th:block th:include="~{fragments/head}"/>
+</head>
+
+<body>
+<div class="container ">
+    <th:block sec:authorize="hasRole('ROLE_USER')">
+        <th:block th:include="~{fragments/user-navbar}"></th:block>
+    </th:block>
+    <th:block sec:authorize="hasAnyRole('ROLE_ROOT')">
+        <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    </th:block>
+    <th:block sec:authorize="hasAnyRole('ROOT_ADMIN')">
+        <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    </th:block>
+    <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
+    <h1>This is home</h1>
+    </div>
+    <th:block th:include="~{fragments/footer}"></th:block>
+</div>
+
+</body>
+
+</html>

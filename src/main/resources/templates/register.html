@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">>
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <th:block th:include="~{fragments/head}"></th:block>
@@ -9,7 +9,7 @@
 
 <body>
 <div class="container ">
-   <th:block th:iclude="~{fragments/navbar}"></th:block>
+    <th:block th:include="~{fragments/navbar}"></th:block>
     <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
         <h1 class="w-100 text-light text-right">Register</h1>
     </div>
@@ -18,50 +18,52 @@
             <div class="bg-white tm-block">
                 <div class="row mt-2">
                     <div class="col-12">
-                        <form th:action="@{/users/register}" method="post" class="tm-login-form">
+                        <form th:action="@{/users/register}" th:object="${userAddBindingModel}" method="post" class="tm-login-form">
                             <div class="input-group">
                                 <label for="username" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Username</label>
-                                <input  name="username" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
+                                <input th:field="*{username}" th:errorclass="alert-danger" name="username" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
                                        id="username" placeholder="Enter username">
                             </div>
                             <div  class="mx-auto" >
-                                <small class="text-danger">Username must be between 2 and 10 characters</small>
+                                <small th:each="e : ${#fields.errors('username')}" th:text="${e}"  class="text-danger">Username must be between 2 and 10 characters</small>
                             </div>
                             <div class="input-group mt-3">
                                 <label for="password" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Password</label>
-                                <input  name="password" type="password" class="form-control validate"
+                                <input th:field="*{password}" th:errorclass="alert-danger"  name="password" type="password" class="form-control validate"
                                        id="password" placeholder="Enter password">
                             </div>
                             <div class="mx-auto" >
-                                <small  class="text-danger"></small>
+                                <small th:each="e : ${#fields.errors('password')}" th:text="${e}"  class="text-danger"></small>
                             </div>
                             <div class="input-group mt-3">
                                 <label for="confirmPassword" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Confirm Password</label>
-                                <input name="confirmPassword" type="password" class="form-control validate" id="confirmPassword" placeholder="Confirm password" >
+                                <input th:field="*{confirmPassword}" th:errorclass="alert-danger" name="confirmPassword" type="password" class="form-control validate" id="confirmPassword" placeholder="Confirm password" >
                                 <div class="mx-auto" >
-                                    <small class="text-danger">Password must be betweeen 3 and 10 characters</small>
+                                    <small th:each="e : ${#fields.errors('confirmPassword')}" th:text="${e}"  class="text-danger">Password must be betweeen 3 and 10 characters</small>
                                 </div>
                             </div>
                             <div class="input-group mt-3">
                                 <label for="email" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Email</label>
-                                <input  name="email" type="email" class="form-control validate" id="email" placeholder="Enter email">
+                                <input th:field="*{email}" th:errorclass="alert-danger"  name="email" type="email" class="form-control validate" id="email" placeholder="Enter email">
 
                             </div>
                             <div class="mx-auto text-center">
-                                <small  class="text-danger">Enter valid email address</small>
+                                <small th:each="e : ${#fields.errors('email')}" th:text="${e}"  class="text-danger">Enter valid email address</small>
                             </div>
                             <div class="input-group mt-3">
-                                <label for="age" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Age</label>
-                                <input  name="age" type="number" class="form-control validate" id="age" placeholder="Enter age">
-
+                                <label for="birthDate" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Birth Date</label>
+                                <input th:field="*{birthDate}" th:errorclass="alert-danger"  name="birthDate" type="date" class="form-control validate" id="birthDate" data-large-mode="true"/>
+                            </div>
+                            <div class="mx-auto text-center align-content-center">
+                                <small th:each="e : ${#fields.errors('birthDate')}" th:text="${e}" class="text-danger" >Enter git address following this pattern </small>
                             </div>
                             <div class="input-group mt-3">
                                 <label for="address" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Address</label>
-                                <input  name="address" type="text" class="form-control validate" id="address" placeholder="Enter address">
+                                <input th:field="*{address}" th:errorclass="alert-danger" name="address" type="text" class="form-control validate" id="address" placeholder="Enter address">
 
                             </div>
                             <div class="mx-auto text-center align-content-center">
-                                <small class="text-danger" >Enter git address following this pattern </small>
+                                <small th:each="e : ${#fields.errors('address')}" th:text="${e}" class="text-danger" >Enter git address following this pattern </small>
                             </div>
                             <div class="input-group mt-3">
                                 <button type="submit" class="btn btn-primary d-inline-block mx-auto">Register</button>

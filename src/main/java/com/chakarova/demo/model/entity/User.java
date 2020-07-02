@@ -3,7 +3,9 @@ package com.chakarova.demo.model.entity;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -12,7 +14,7 @@ public class User extends BaseEntity implements UserDetails {
     private String username;
     private String password;
     private String email;
-    private Integer age;
+    private LocalDate birthDate;
     private String address;
     private BigDecimal salary;
     private BigDecimal bonus;
@@ -24,7 +26,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Override
-    @Column(name = "useername", nullable = false,unique = true)
+    @Column(name = "username", nullable = false,unique = true)
     public String getUsername() {
         return username;
     }
@@ -112,14 +114,7 @@ public class User extends BaseEntity implements UserDetails {
     public BigDecimal getBonus() {
         return bonus;
     }
-    @Column(name = "age", nullable = false)
-    public Integer getAge() {
-        return age;
-    }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
     @Column(name = "address", columnDefinition = "TEXT")
     public String getAddress() {
         return address;
@@ -127,5 +122,13 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+    @Column(name = "birth_date",nullable = false)
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }

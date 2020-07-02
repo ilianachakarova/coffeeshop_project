@@ -1,8 +1,8 @@
 package com.chakarova.demo.service;
 
-import com.chakarova.demo.model.service.UserServiceModel;
+import com.chakarova.demo.model.entity.Role;
 
 public interface RoleService {
     void seedRolesInDb();
-    void assignUserRoles(UserServiceModel userServiceModel);
+    Role findRoleByName(String name);
 }
