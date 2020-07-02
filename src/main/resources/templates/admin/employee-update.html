@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+
+
+<body>
+<div class="container ">
+    <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
+        <h1 class="w-100 text-light text-right">Update User</h1>
+    </div>
+    <div class="row tm-mt-big">
+        <div class="col-12 mx-auto tm-login-col">
+            <div class="bg-white tm-block">
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <form th:action="@{/admin/update/user/{id}(id=${user.id})}" th:object="${updateUserBindingModel}" method="post" class="tm-login-form">
+                            <div class="input-group mt-3">
+                                <label for="username" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Username</label>
+                                <input th:field="${user.username}" disabled name="username" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
+                                       id="username" placeholder="Enter username">
+                            </div>
+
+                            <div class="input-group mt-3">
+                                <label for="firstName" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">First Name</label>
+                                <input th:field="${user.firstName}" disabled name="firstName" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
+                                       id="firstName">
+                            </div>
+
+                            <div class="input-group mt-3">
+                                <label for="lastName" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Last name</label>
+                                <input th:field="${user.lastName}"disabled name="lastName" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
+                                       id="lastName" placeholder="Enter last name">
+                            </div>
+
+
+                            <div class="input-group mt-3">
+                                <label for="email" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Email</label>
+                                <input th:field="${user.email}" disabled  name="email" type="email" class="form-control validate" id="email" placeholder="Enter email">
+                            </div>
+
+<!--                            <div class="input-group mt-3">-->
+<!--                                <label for="birthDate" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Birth Date</label>-->
+<!--                                <input th:field="*{birthDate.toString()}" disabled  name="birthDate" type="date" class="form-control validate" id="birthDate" data-large-mode="true"/>-->
+<!--                            </div>-->
+
+                            <div class="input-group mt-3">
+                                <label for="salary" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Salary</label>
+                                <input th:field="*{salary}" th:text="${user.salary}"  name="salary" type="number" class="form-control validate" id="salary" placeholder="Update salary" />
+                            </div>
+                            <div class="mx-auto text-center">
+                                <small th:each="e : ${#fields.errors('salary')}" th:text="${e}"  class="text-danger">Enter valid email address</small>
+                            </div>
+
+                            <div class="input-group mt-3">
+                                <label for="bonus" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Bonus</label>
+                                <input th:field="*{bonus}" th:text="${user.bonus}"  name="bonus" type="number" class="form-control validate" id="bonus"
+                                       placeholder="Update bonus" />
+                            </div>
+                            <div class="mx-auto text-center">
+                                <small th:each="e : ${#fields.errors('bonus')}" th:text="${e}"  class="text-danger">Enter valid email address</small>
+                            </div>
+                            <div class="input-group mt-3">
+                                <label for="roles" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 ">Roles</label>
+                                <select th:field="*{role}"  name="roles" class="form-control validate" id="roles">
+                                    <option class="text-center" value="ROLE_USER">ROLE_USER</option>
+                                    <option class="text-center" value="ROLE_ADMIN">ROLE_ADMIN</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group mt-3">
+                                <button type="submit" class="btn btn-primary d-inline-block mx-auto">Update</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block th:include="~{fragments/footer}"></th:block>
+</body>
+
+</html>

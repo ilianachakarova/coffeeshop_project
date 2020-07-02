@@ -12,6 +12,8 @@ public class UserServiceModel extends BaseServiceModel{
     private String email;
     private LocalDate birthDate;
     private String address;
+    private String firstName;
+    private String lastName;
     private BigDecimal salary;
     private BigDecimal bonus;
 
@@ -83,5 +85,21 @@ public class UserServiceModel extends BaseServiceModel{
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

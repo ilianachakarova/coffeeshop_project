@@ -16,6 +16,8 @@ public class User extends BaseEntity implements UserDetails {
     private String email;
     private LocalDate birthDate;
     private String address;
+    private String firstName;
+    private String lastName;
     private BigDecimal salary;
     private BigDecimal bonus;
 
@@ -130,5 +132,21 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+    @Column(name = "first_name", nullable = false)
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    @Column(name = "last_name", nullable = false)
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

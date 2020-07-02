@@ -14,6 +14,8 @@ public class UserAddBindingModel {
     private String email;
    private LocalDate birthDate;
     private String address;
+    private String firstName;
+    private String lastName;
 
     public UserAddBindingModel() {
     }
@@ -71,5 +73,21 @@ public class UserAddBindingModel {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+    @NotNull(message = "First name is required")
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    @NotNull(message = "Last name is required")
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

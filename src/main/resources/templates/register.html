@@ -19,13 +19,29 @@
                 <div class="row mt-2">
                     <div class="col-12">
                         <form th:action="@{/users/register}" th:object="${userAddBindingModel}" method="post" class="tm-login-form">
-                            <div class="input-group">
+                            <div class="input-group mt-3">
                                 <label for="username" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Username</label>
                                 <input th:field="*{username}" th:errorclass="alert-danger" name="username" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
                                        id="username" placeholder="Enter username">
                             </div>
                             <div  class="mx-auto" >
-                                <small th:each="e : ${#fields.errors('username')}" th:text="${e}"  class="text-danger">Username must be between 2 and 10 characters</small>
+                                <small th:each="e : ${#fields.errors('username')}" th:text="${e}"  class="text-danger">First name must be between 2 and 10 characters</small>
+                            </div>
+                            <div class="input-group mt-3">
+                                <label for="firstName" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">First Name</label>
+                                <input th:field="*{firstName}" th:errorclass="alert-danger" name="firstName" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
+                                       id="firstName" placeholder="Enter first name">
+                            </div>
+                            <div  class="mx-auto" >
+                                <small th:each="e : ${#fields.errors('firstName')}" th:text="${e}"  class="text-danger">Username must be between 2 and 10 characters</small>
+                            </div>
+                            <div class="input-group mt-3">
+                                <label for="lastName" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Last name</label>
+                                <input th:field="*{lastName}" th:errorclass="alert-danger" name="lastName" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
+                                       id="lastName" placeholder="Enter last name">
+                            </div>
+                            <div  class="mx-auto" >
+                                <small th:each="e : ${#fields.errors('lastName')}" th:text="${e}"  class="text-danger">Username must be between 2 and 10 characters</small>
                             </div>
                             <div class="input-group mt-3">
                                 <label for="password" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Password</label>
