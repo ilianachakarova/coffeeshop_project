@@ -12,4 +12,6 @@ public interface ProductService {
     List<ProductServiceModel>findProductsByCategory(CategoryNames category);
 
     ProductServiceModel addProduct(ProductAddBindingModel productAddBindingModel) throws IOException;
+
+    List<ProductServiceModel>findAllProducts();
 }

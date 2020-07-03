@@ -8,9 +8,8 @@
 
 <body>
 <div class="container ">
-    <th:block sec:authorize="hasAnyRole('ROOT_ADMIN')">
+
         <th:block th:include="~{fragments/admin-navbar}"></th:block>
-    </th:block>
     <div class="container-fluid">
         <main class="mt-3">
             <h1 class="text-center text-dark">All Users</h1>

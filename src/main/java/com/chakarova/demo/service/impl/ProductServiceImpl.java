@@ -52,4 +52,11 @@ public class ProductServiceImpl implements ProductService {
        Product product = this.productRepository.save(this.modelMapper.map(productServiceModel, Product.class));
        return this.modelMapper.map(product,ProductServiceModel.class);
     }
+
+    @Override
+    public List<ProductServiceModel> findAllProducts() {
+        return this.productRepository.findAll()
+                .stream().map(x->this.modelMapper.map(x,ProductServiceModel.class))
+                .collect(Collectors.toList());
+    }
 }

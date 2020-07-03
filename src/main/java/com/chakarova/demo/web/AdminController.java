@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 @Controller
@@ -29,17 +30,19 @@ public class AdminController {
         this.modelMapper = modelMapper;
     }
     @GetMapping("/all-users")
-    public ModelAndView showAllEmployees(ModelAndView modelAndView){
+    public ModelAndView showAllEmployees(ModelAndView modelAndView, Principal principal){
         modelAndView.addObject("users",this.userService.findAllUsers());
+        modelAndView.addObject("username",principal.getName());
         modelAndView.setViewName("admin/all-users");
         return modelAndView;
     }
 
     @GetMapping("/update/user/{id}")
     @PreAuthorize("hasRole('ROLE_ROOT')")
-    public ModelAndView userUpdate(@PathVariable("id")Long id, ModelAndView modelAndView, Model model){
+    public ModelAndView userUpdate(@PathVariable("id")Long id, ModelAndView modelAndView, Model model, Principal principal){
         UserServiceModel userServiceModel =this.userService.findUserById(id);
         UsersAllViewModel user = this.modelMapper.map(userServiceModel,UsersAllViewModel.class);
+        modelAndView.addObject("username",principal.getName());
         user.setRoles(userServiceModel.getAuthorities().stream().map(Role::getAuthority).collect(Collectors.toSet()));
         modelAndView.addObject("user",user);
         if(!model.containsAttribute("updateUserBindingModel")){
@@ -70,4 +73,6 @@ public class AdminController {
         this.userService.deleteUserById(id);
         return "redirect:/admin/all-users";
     }
+
+
 }

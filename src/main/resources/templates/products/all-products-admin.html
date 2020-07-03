@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">>
+
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
+
+<body>
+<div class="container ">
+    <th:block sec:authorize="hasAnyRole('ROLE_ROOT')">
+        <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    </th:block>
+    <th:block sec:authorize="hasAnyRole('ROOT_ADMIN')">
+        <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    </th:block>
+    <div class="container">
+        <h2 class="text-center text-white m-3">All Products</h2>
+        <div class='row mb-4 d-flex justify-content-around'>
+                <div>
+                    <table class="table table-hover w-75 mx-auto table-custom">
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Picture</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr th:each="p :${products}">
+                            <th th:text="${p.getId()}">No</th>
+                            <th th:text="${p.name}">Name</th>
+                            <th th:text="${p.category}">Category</th>
+                            <th><img th:src="${p.pictureUrl}" class="img-thumbnail img-table"></th>
+                            <th th:text="${p.quantity}">Quantity</th>
+                            <th>
+                                <a class="btn-dark" th:href="@{/admin/product/details/{id}(id=${p.getId()})}">Details</a>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <th:block th:include="~{fragments/footer}"></th:block>
+</div>
+
+</body>
+
+</html>
