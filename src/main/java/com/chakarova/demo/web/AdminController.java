@@ -63,4 +63,11 @@ public class AdminController {
         this.userService.updateUser(updateUserBindingModel, id);
         return "redirect:/admin/all-users";
     }
+
+    @GetMapping("/user/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ROOT')")
+    public String deleteEmployee(@PathVariable("id")Long id){
+        this.userService.deleteUserById(id);
+        return "redirect:/admin/all-users";
+    }
 }

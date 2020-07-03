@@ -23,7 +23,7 @@
                             Admin
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" th:href="@{/exercises/add}">Add Exercise</a>
+                            <a class="dropdown-item" th:href="@{/product/add}">Add Product</a>
                             <a class="dropdown-item" th:href="@{/roles/add}">Add Role</a>
 
                         </div>
@@ -34,12 +34,11 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                            role="button" data-toggle="dropdown" aria-haspopup="true"
                            aria-expanded="false">
-                            Admin
+                            Root
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            //root can change salary and roles of other users
-                            //root can change products price
                             <a class="dropdown-item" th:href="@{/admin/all-users}">Employees</a>
+                            <a class="dropdown-item" th:href="@{/admin/blabla}">Show sales</a>
                             <a class="dropdown-item" th:href="@{/products/showAll}">Products</a>
 
                         </div>

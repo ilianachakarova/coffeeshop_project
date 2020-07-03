@@ -66,14 +66,19 @@
                             </div>
                             <div class="input-group mt-3">
                                 <label for="roles" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 ">Roles</label>
-                                <select th:field="*{role}"  name="roles" class="form-control validate" id="roles">
-                                    <option class="text-center" value="ROLE_USER">ROLE_USER</option>
-                                    <option class="text-center" value="ROLE_ADMIN">ROLE_ADMIN</option>
+                                <select th:field="*{role}" th:selected="${user.roles}==*{role}" name="roles"  id="roles">
+                                    <option  value="ROLE_USER">ROLE_USER</option>
+                                    <option  value="ROLE_ADMIN">ROLE_ADMIN</option>
                                 </select>
                             </div>
-
+                            <div class="mx-auto text-center">
+                                <small th:each="e : ${#fields.errors('role')}" th:text="${e}"  class="text-danger">Enter valid email address</small>
+                            </div>
                             <div class="input-group mt-3">
                                 <button type="submit" class="btn btn-primary d-inline-block mx-auto">Update</button>
+                            </div>
+                            <div class="input-group mt-3">
+                                <a th:href="@{/admin/user/delete/{id}(id=${user.id})}" class="btn btn-primary d-inline-block mx-auto">Delete</a>
                             </div>
 
                         </form>
