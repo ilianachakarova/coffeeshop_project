@@ -56,7 +56,7 @@
                                 <div class="form-group">
                                     <label for="category" class="font-weight-bold">Category</label>
                                     <select th:field="*{category}" th:errorclass="alert-danger" class="form-control" id="category" name="category">
-                                        <option selected="" disabled="">--- Select Categories ---</option>
+                                        <option selected="" value="" disabled="">--- Select Categories ---</option>
                                         <option th:each="o : ${T(com.chakarova.demo.model.entity.enums.CategoryNames).values()}"
                                         th:text="${o}" th:value="${o}"></option>
                                     </select>

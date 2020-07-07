@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+
+
+<body>
+<div class="container ">
+    <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
+        <h1 class="w-100 text-light text-right">Product Details</h1>
+    </div>
+    <div class="row tm-mt-big">
+        <div class="col-12 mx-auto tm-login-col">
+            <div class="bg-white tm-block">
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <form th:action="@{/admin/product/details/{id}(id=${productAddBindingModel.id})}" th:object="${productAddBindingModel}"  method="post" class="tm-login-form">
+                            <div class="input-group mt-3">
+                                <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Name</label>
+                                <input  name="name" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
+                                        id="name" th:field="*{name}" th:placeholder="name"/>
+                            </div>
+
+                            <div class="input-group mt-3">
+                                <label for="description" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Description</label>
+                                <textarea th:field="*{description}" name="description" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
+                                          th:placeholder="description"  id="description"></textarea>
+                            </div>
+
+                            <div class="input-group mt-3">
+                                <label for="pictureUrl" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Image</label>
+                                <img th:src="*{pictureUrl}"  name="pictureUrl"  class="tm-product-img-dummy"  id="pictureUrl"
+                                />
+                            </div>
+
+                            <div class="input-group mt-3">
+                                <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
+                                <input readonly name="category" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"
+                                       id="category" th:field="*{category}" placeholder="Enter last name">
+                            </div>
+
+
+                            <div class="input-group mt-3">
+                                <label for="deliveryPrice" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Delivery Price</label>
+                                <input th:field="*{deliveryPrice}"   name="deliveryPrice" type="number" class="form-control validate" id="deliveryPrice" placeholder="Enter email">
+                            </div>
+
+                            <!--                            <div class="input-group mt-3">-->
+                            <!--                                <label for="birthDate" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Birth Date</label>-->
+                            <!--                                <input th:field="*{birthDate.toString()}" disabled  name="birthDate" type="date" class="form-control validate" id="birthDate" data-large-mode="true"/>-->
+                            <!--                            </div>-->
+
+                            <div class="input-group mt-3">
+                                <label for="sellPrice" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Sell Price</label>
+                                <input th:field="*{sellPrice}"  name="sellPrice" type="number" class="form-control validate" id="sellPrice" placeholder="Update salary" />
+                            </div>
+                            <!--                            <div class="mx-auto text-center">-->
+                            <!--                                <small th:each="e : ${#fields.errors('salary')}" th:text="${e}"  class="text-danger">Enter valid email address</small>-->
+                            <!--                            </div>-->
+
+                            <div class="input-group mt-3">
+                                <label for="quantity" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Quantity</label>
+                                <input th:field="*{quantity}"  name="quantity" type="number" class="form-control validate" id="quantity"
+                                       placeholder="Update bonus" />
+                            </div>
+                            <!--                            <div class="mx-auto text-center">-->
+                            <!--                                <small th:each="e : ${#fields.errors('bonus')}" th:text="${e}"  class="text-danger">Enter valid email address</small>-->
+                            <!--                            </div>-->
+
+                            <div class="input-group mt-3">
+                                <button type="submit" class="btn btn-primary d-inline-block mx-auto">Update</button>
+                            </div>
+                            <div class="input-group mt-3">
+                                <a th:href="@{/admin/product/delete/{id}(id=${productAddBindingModel.id})}" class="btn btn-primary d-inline-block mx-auto">Delete</a>
+                            </div>
+
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block th:include="~{fragments/footer}"></th:block>
+</body>
+
+</html>

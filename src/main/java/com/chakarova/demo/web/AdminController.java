@@ -1,9 +1,13 @@
 package com.chakarova.demo.web;
 
+import com.chakarova.demo.model.binding.ProductAddBindingModel;
 import com.chakarova.demo.model.binding.UpdateUserBindingModel;
 import com.chakarova.demo.model.entity.Role;
+import com.chakarova.demo.model.service.ProductServiceModel;
 import com.chakarova.demo.model.service.UserServiceModel;
+import com.chakarova.demo.model.view.ProductDetailsViewModel;
 import com.chakarova.demo.model.view.UsersAllViewModel;
+import com.chakarova.demo.service.ProductService;
 import com.chakarova.demo.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +27,12 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     private final UserService userService;
+    private final ProductService productService;
     private final ModelMapper modelMapper;
     @Autowired
-    public AdminController(UserService userService, ModelMapper modelMapper) {
+    public AdminController(UserService userService, ProductService productService, ModelMapper modelMapper) {
         this.userService = userService;
+        this.productService = productService;
         this.modelMapper = modelMapper;
     }
     @GetMapping("/all-users")
@@ -36,6 +42,7 @@ public class AdminController {
         modelAndView.setViewName("admin/all-users");
         return modelAndView;
     }
+
 
     @GetMapping("/update/user/{id}")
     @PreAuthorize("hasRole('ROLE_ROOT')")
@@ -72,6 +79,50 @@ public class AdminController {
     public String deleteEmployee(@PathVariable("id")Long id){
         this.userService.deleteUserById(id);
         return "redirect:/admin/all-users";
+    }
+
+    @GetMapping("product/details/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
+    public ModelAndView showDetails(@PathVariable("id")Long id, ModelAndView modelAndView){
+
+        ProductServiceModel productServiceModel = this.productService.findProductById(id);
+        ProductDetailsViewModel product = this.modelMapper.map(productServiceModel,ProductDetailsViewModel.class);
+        product.setCategory(productServiceModel.getCategory().getCategory().name());
+
+        modelAndView.addObject("product",product);
+        modelAndView.setViewName("admin/product-details");
+        return modelAndView;
+    }
+
+    @GetMapping("product/update/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
+    public ModelAndView updateProduct(@PathVariable("id")Long id, ModelAndView modelAndView, Principal principal){
+        modelAndView.addObject("username",principal.getName());
+        ProductServiceModel productServiceModel = this.productService.findProductById(id);
+       ProductDetailsViewModel product = this.modelMapper.map(productServiceModel,ProductDetailsViewModel.class);
+        product.setCategory(productServiceModel.getCategory().getCategory().name());
+        modelAndView.addObject("productAddBindingModel",product);
+        modelAndView.setViewName("admin/product-update");
+        return  modelAndView;
+    }
+
+    @PostMapping("product/details/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
+    public String updateProduct(@PathVariable("id") Long id, @ModelAttribute ("productAddBindingModel") ProductAddBindingModel productAddBindingModel, BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes){
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("productAddBindingModel",productAddBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.productAddBindingModel",bindingResult);
+            return "redirect:/product/details/{id}";
+        }
+        this.productService.updateProduct(productAddBindingModel);
+        return "redirect:/home";
+    }
+
+    @GetMapping("product/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long id){
+        this.productService.deleteProduct(id);
+        return "redirect:/products/all";
     }
 
 

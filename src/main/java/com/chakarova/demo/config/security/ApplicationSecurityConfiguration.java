@@ -41,6 +41,6 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .logoutSuccessUrl("/")
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/");
+                .accessDeniedPage("/error");
     }
 }
