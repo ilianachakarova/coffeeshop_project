@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+
+<body>
+<div id="home">
+    <div class="container">
+
+                <th:block sec:authorize="hasRole('ROLE_USER')">
+                    <th:block th:include="~{fragments/user-navbar}"></th:block>
+                </th:block>
+                <th:block sec:authorize="hasAnyRole('ROLE_ROOT')">
+                    <th:block th:include="~{fragments/admin-navbar}"></th:block>
+                </th:block>
+                <th:block sec:authorize="hasAnyRole('ROOT_ADMIN')">
+                    <th:block th:include="~{fragments/admin-navbar}"></th:block>
+                </th:block>
+
+        <div class="container-fluid">
+            <h2 class="text-center text-white mt-5">Auto Dealer Shop Offers</h2>
+            <div class="offers row mx-auto d-flex flex-row justify-content-center">
+                <div th:each="product: ${products}" class="offer card col-sm-6 col-md-3  col-lg-2 m-1 p-0">
+                    <div class="card-img-top-wrapper">
+                        <img class="card-img-top" th:if="${product.pictureUrl}" th:src="${product.pictureUrl}" alt="Car image">
+                    </div>
+                    <div class="card-body pb-1">
+                        <h5 class="card-title" th:text="|${product.name}|">Car brand</h5>
+                    </div>
+                    <ul class="offer-details list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="card-text"><span th:text="'$' + ${product.sellPrice}"></span></div>
+
+                        </li>
+                    </ul>
+                    <button class="btn-dark" th:id="${product.id}"  th:value="${product.id}">Add Item</button>
+
+                </div>
+            </div>
+            <div class="row container-fluid">
+                <button class="btn-success row mx-auto d-flex flex-row justify-content-center mt-3" id="finish">Finish Order</button>
+            </div>
+        </div>
+
+        <th:block th:include="~{fragments/footer}"></th:block>
+    </div>
+</div>
+
+<script>
+    let arrIds = [];
+    console.log(arrIds)
+    $('.btn-dark').click(function() {
+
+        arrIds.push(this.id);
+
+    });
+    $('#finish').click(function () {
+
+        $.ajax({
+            type : "POST",
+            url : 'http://localhost:8000/array',
+            data : {
+                'myArray': arrIds //notice that "myArray" matches the value for @RequestParam
+                //on the Java side
+            },
+
+            error : function(e) {
+                alert('Error: ' + e);
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>
