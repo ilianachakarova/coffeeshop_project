@@ -36,7 +36,7 @@ public class AdminController {
         this.modelMapper = modelMapper;
     }
     @GetMapping("/all-users")
-    public ModelAndView showAllEmployees(ModelAndView modelAndView, Principal principal){
+    public ModelAndView showAllEmployees(ModelAndView modelAndView, Principal principal,Model model){
         modelAndView.addObject("users",this.userService.findAllUsers());
         modelAndView.addObject("username",principal.getName());
         modelAndView.setViewName("admin/all-users");

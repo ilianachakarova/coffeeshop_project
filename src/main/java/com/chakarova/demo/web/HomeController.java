@@ -1,8 +1,8 @@
 package com.chakarova.demo.web;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 
@@ -14,8 +14,9 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String home(Principal principal, Model model){
-        model.addAttribute("username",principal.getName());
-        return "home";
+    public ModelAndView home(Principal principal,ModelAndView modelAndView){
+        modelAndView.addObject("username",principal.getName());
+        modelAndView.setViewName("home");
+        return modelAndView;
     }
 }

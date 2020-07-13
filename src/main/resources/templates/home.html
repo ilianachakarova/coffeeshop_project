@@ -14,7 +14,7 @@
     <th:block sec:authorize="hasAnyRole('ROLE_ROOT')">
         <th:block th:include="~{fragments/admin-navbar}"></th:block>
     </th:block>
-    <th:block sec:authorize="hasAnyRole('ROOT_ADMIN')">
+    <th:block sec:authorize="hasAnyRole('ROLE_ADMIN')">
         <th:block th:include="~{fragments/admin-navbar}"></th:block>
     </th:block>
     <div class="container mt-lg-5  bg-transparent h-100">
