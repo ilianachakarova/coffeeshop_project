@@ -1,6 +1,7 @@
 package com.chakarova.demo.service;
 
 import com.chakarova.demo.model.binding.UpdateUserBindingModel;
+import com.chakarova.demo.model.entity.User;
 import com.chakarova.demo.model.service.UserServiceModel;
 import com.chakarova.demo.model.view.UsersAllViewModel;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,4 +15,6 @@ public interface UserService extends UserDetailsService {
     void deleteUserById(Long id);
 
     void updateUser(UpdateUserBindingModel updateUserBindingModel, Long id);
+
+    User findUserByUsername(String name);
 }

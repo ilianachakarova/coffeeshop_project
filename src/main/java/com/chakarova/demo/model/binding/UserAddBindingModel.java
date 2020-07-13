@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
 public class UserAddBindingModel {
@@ -66,7 +67,7 @@ public class UserAddBindingModel {
         this.address = address;
     }
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-   // @PastOrPresent(message = "Birth date should be in the past")
+    @PastOrPresent(message = "Birth date should be in the past")
     public LocalDate getBirthDate() {
         return birthDate;
     }

@@ -84,4 +84,10 @@ public class UserServiceImpl implements UserService {
         user.setAuthorities(Set.of(this.roleService.findRoleByName(updateUserBindingModel.getRole())));
         this.userRepository.save(user);
     }
+
+    @Override
+    public User findUserByUsername(String name) {
+        return this.userRepository.
+                findByUsername(name).orElseThrow(()->new IllegalArgumentException("No such user"));
+    }
 }
