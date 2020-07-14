@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
+
+<body>
+<div class="container ">
+
+    <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    <div class="container-fluid">
+        <form th:action="@{/admin/revenue}" method="post"
+              class="tm-login-form" th:object="${salesBindingModel}">
+            <div class="input-group mt-3">
+                <label for="startDate" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Start Date</label>
+                <input th:field="*{startDate}" th:errorclass="alert-danger"  name="startDate" type="datetime-local" class="form-control validate" id="startDate" data-large-mode="true"/>
+            </div>
+            <div class="mx-auto text-center align-content-center">
+                <small th:each="e : ${#fields.errors('startDate')}" th:text="${e}" class="text-danger" >Enter git address following this pattern </small>
+            </div>
+
+            <div class="input-group mt-3">
+                <label for="endDate" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">End Date</label>
+                <input th:field="*{endDate}" th:errorclass="alert-danger"  name="birthDate" type="datetime-local" class="form-control validate" id="endDate" data-large-mode="true"/>
+            </div>
+            <div class="mx-auto text-center align-content-center">
+                <small th:each="e : ${#fields.errors('endDate')}" th:text="${e}" class="text-danger" >Enter git address following this pattern </small>
+            </div>
+
+            <div class="input-group mt-3">
+                <button type="submit" class="btn btn-primary d-inline-block mx-auto">Login</button>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="~{fragments/footer}"></th:block>
+</div>
+
+</body>
+
+</html>

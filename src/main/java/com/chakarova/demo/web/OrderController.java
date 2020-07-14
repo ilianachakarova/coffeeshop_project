@@ -36,6 +36,7 @@ public class OrderController {
     @GetMapping("/add")
     public ModelAndView addOrder(ModelAndView modelAndView, Principal principal){
         modelAndView.addObject("username", principal.getName());
+
         modelAndView.addObject("products",this.productService.findAllProducts()
         .stream().map(p->this.modelMapper.map(p, ProductDetailsViewModel.class)).collect(Collectors.toList()));
         modelAndView.setViewName("orders/order-add");

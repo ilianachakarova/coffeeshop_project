@@ -1,9 +1,8 @@
 package com.chakarova.demo.model.entity;
 
-import com.chakarova.demo.model.entity.enums.CategoryNames;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -15,6 +14,7 @@ public class Product extends BaseEntity{
     private BigDecimal sellPrice;
     private String pictureUrl;
     private Integer quantity;
+    private Set<Order>orders;
 
     public Product() {
     }
@@ -73,5 +73,13 @@ public class Product extends BaseEntity{
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+    @ManyToMany
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 }
