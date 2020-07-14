@@ -154,6 +154,9 @@ public class AdminController {
                 this.orderService.findTotalRevenueForPeriod(salesBindingModel.getStartDate(),
                         salesBindingModel.getEndDate());
         model.addAttribute("revenue",revenue);
+        model.addAttribute("ordersCountPerEmployee",this.orderService.
+                findRevenueByEmployee(salesBindingModel.getStartDate(),salesBindingModel.getEndDate()));
+
         return "admin/sales";
     }
 

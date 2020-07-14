@@ -18,7 +18,7 @@
         <div class="row tm-content-row tm-mt-big justify-content-center">
             <div class="tm-col tm-col-small">
                 <div class="bg-white tm-block h-100">
-                    <div id="googleGauge" style="width: 100%; height: 100%;"></div>
+                    <div id="googlePiechart" style="width: 100%; height: 100%;"></div>
 
                 </div>
             </div>
@@ -29,5 +29,51 @@
 </div>
 
 </body>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    // Draw the chart and set the chart values
+    function drawChart() {
+
+
+        // let myfunc = function(){
+        //     [[${ordersCountPerEmployee}]].forEach(g=>{
+        //         let arr = Array.from(['x',g])
+        //         console.log(arr);
+        //     });
+        //
+        // };
+
+        let dataPie = google.visualization.arrayToDataTable([
+            ['Worker','Total Orders'],
+            ['x',[[${ordersCountPerEmployee}]][0]],
+            ['y',5],
+            ['z',7]
+
+
+            // ['Hot Drinks', six],
+            // ['Cold Drinks', five],
+            // ['Snacks', four],
+            // ['Cakes', three],
+
+        ]);
+
+        // Optional; add a title and set the width and height of the chart
+        // 'width':550, 'height':400
+        let optionsPie = {
+            is3D: true,
+            width:500, height:500,
+            chartArea: {left: 0, top: 0, riwidth: 0, bottom: 0, width: '100%', height: '100%'}
+        };
+
+        // Display the chart inside the <div> element with id="piechart"
+        let chartPie = new google.visualization
+            .PieChart(document.getElementById('googlePiechart'));
+        chartPie.draw(dataPie,optionsPie);
+    }
+</script>
 
 </html>

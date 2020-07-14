@@ -14,7 +14,7 @@ public interface OrderService {
     OrderServiceModel findLastSavedOrder() throws InterruptedException;
     List<OrderServiceModel>findOrdersInTimeRange(LocalDateTime t1,LocalDateTime t2);
     BigDecimal findTotalRevenueForPeriod(LocalDateTime t1,LocalDateTime t2);
-
+    List<Integer> findRevenueByEmployee(LocalDateTime t1, LocalDateTime t2);
 
 }
 
