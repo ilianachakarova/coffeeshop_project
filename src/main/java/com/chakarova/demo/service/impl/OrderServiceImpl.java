@@ -15,8 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,7 +69,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-
     @Override
     public BigDecimal findTotalRevenueForPeriod(LocalDateTime t1, LocalDateTime t2) {
         List<OrderServiceModel> allOrdersForPeriod = this.findOrdersInTimeRange(t1, t2);
@@ -79,14 +79,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Integer> findRevenueByEmployee(LocalDateTime t1, LocalDateTime t2) {
-        List<UsersAllViewModel>employees = this.userService.findAllUsers();
-        List<Integer>ordersPerEmployee = new ArrayList<>();
-        employees.stream().forEach(e->{
-         int numOfOrders = (int) this.findOrdersInTimeRange(t1, t2).stream().filter(o -> o.getEmployee().getUsername().equals(e.getUsername())).count();
-         ordersPerEmployee.add(numOfOrders);
+    public OrderServiceModel findOrderById(Long orderId) {
+        return this.orderRepository.findById(orderId)
+                .map(order -> this.modelMapper.map(
+                        order,OrderServiceModel.class
+                ))
+                .orElseThrow(()->new IllegalArgumentException());
+    }
+
+    @Override
+    public Map<String, Integer> findRevenueByEmployee(LocalDateTime t1, LocalDateTime t2) {
+        List<UsersAllViewModel> employees = this.userService.findAllUsers();
+        Map<String, Integer> ordersPerEmployee = new HashMap<>();
+        employees.stream().forEach(e -> {
+            int numOfOrders = (int) this.findOrdersInTimeRange(t1, t2).stream().filter(o -> o.getEmployee().getUsername().equals(e.getUsername())).count();
+            if (numOfOrders != 0) {
+                ordersPerEmployee.put(e.getUsername(), numOfOrders);
+            }
+
         });
-        return ordersPerEmployee.stream().filter(n->n!=0).collect(Collectors.toList());
+        return ordersPerEmployee;
     }
 
     public static BigDecimal findTotalPrice(List<Product> products) {

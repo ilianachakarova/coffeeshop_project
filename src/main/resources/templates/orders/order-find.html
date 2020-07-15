@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
+
+<body>
+<div class="container ">
+
+    <th:block th:include="~{fragments/user-navbar}"></th:block>
+    <div class="container-fluid">
+        <th:block th:if="${incorrectPd}">
+            <div class="text-center" style="color: red">
+                Bad Credentials
+                <small class="text-danger col-12 text-center">Password incorrect. You can only view orders closed by YOU</small>
+                <br/>
+            </div>
+        </th:block>
+
+        <form th:action="@{/orders/find/{id}(id=${findOrderBindingModel.getOrderId()})}" method="post"
+              class="tm-login-form" th:object="${findOrderBindingModel}">
+            <div class="input-group mt-3">
+                <label for="orderId" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label text-light">Order ID</label>
+                <input  th:errorclass="alert-danger"  th:name="orderId" type="number" class="form-control validate" id="orderId" data-large-mode="true"/>
+            </div>
+            <div class="mx-auto text-center align-content-center">
+                <small th:each="e : ${#fields.errors('orderId')}" th:text="${e}" class="text-danger" >Enter git address following this pattern </small>
+            </div>
+
+            <div class="input-group mt-3">
+                <label for="userPassword" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label text-light">Employee Password</label>
+                <input th:field="*{userPassword}" th:errorclass="alert-danger"  name="userPassword" type="password" class="form-control validate" id="userPassword" data-large-mode="true"/>
+            </div>
+            <div class="mx-auto text-center align-content-center">
+                <small th:each="e : ${#fields.errors('userPassword')}" th:text="${e}" class="text-danger" >Enter git address following this pattern </small>
+            </div>
+
+            <div class="input-group mt-3">
+                <button type="submit" class="btn btn-dark d-inline-block mx-auto">Get Sales</button>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="~{fragments/footer}"></th:block>
+</div>
+
+</body>
+
+</html>

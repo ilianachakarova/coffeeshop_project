@@ -14,7 +14,7 @@
         <form th:action="@{/admin/revenue}" method="post"
               class="tm-login-form" th:object="${salesBindingModel}">
             <div class="input-group mt-3">
-                <label for="startDate" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Start Date</label>
+                <label for="startDate" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label text-light">Start Date</label>
                 <input th:field="*{startDate}" th:errorclass="alert-danger"  name="startDate" type="datetime-local" class="form-control validate" id="startDate" data-large-mode="true"/>
             </div>
             <div class="mx-auto text-center align-content-center">
@@ -22,7 +22,7 @@
             </div>
 
             <div class="input-group mt-3">
-                <label for="endDate" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">End Date</label>
+                <label for="endDate" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label text-light">End Date</label>
                 <input th:field="*{endDate}" th:errorclass="alert-danger"  name="birthDate" type="datetime-local" class="form-control validate" id="endDate" data-large-mode="true"/>
             </div>
             <div class="mx-auto text-center align-content-center">
@@ -30,7 +30,7 @@
             </div>
 
             <div class="input-group mt-3">
-                <button type="submit" class="btn btn-primary d-inline-block mx-auto">Login</button>
+                <button type="submit" class="btn btn-dark d-inline-block mx-auto">Get Sales</button>
             </div>
         </form>
     </div>

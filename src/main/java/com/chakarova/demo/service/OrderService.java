@@ -6,6 +6,7 @@ import com.chakarova.demo.model.service.OrderServiceModel;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
 
@@ -14,7 +15,9 @@ public interface OrderService {
     OrderServiceModel findLastSavedOrder() throws InterruptedException;
     List<OrderServiceModel>findOrdersInTimeRange(LocalDateTime t1,LocalDateTime t2);
     BigDecimal findTotalRevenueForPeriod(LocalDateTime t1,LocalDateTime t2);
-    List<Integer> findRevenueByEmployee(LocalDateTime t1, LocalDateTime t2);
+    Map<String,Integer> findRevenueByEmployee(LocalDateTime t1, LocalDateTime t2);
+
+    OrderServiceModel findOrderById(Long orderId);
 
 }
 

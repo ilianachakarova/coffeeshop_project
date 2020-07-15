@@ -12,13 +12,26 @@
     <th:block th:include="~{fragments/admin-navbar}"></th:block>
     <div class="container-fluid">
         <div class="row mb-3 mt-3">
-            <h1 style="background: beige" class="justify-content-center" th:text="|Total revenue: ${revenue} EUR|"></h1>
+            <h1 style="background: beige" class="justify-content-center" th:text="|Total revenue for the chosen period: ${revenue} '$'|"></h1>
         </div>
 
         <div class="row tm-content-row tm-mt-big justify-content-center">
-            <div class="tm-col tm-col-small">
-                <div class="bg-white tm-block h-100">
-                    <div id="googlePiechart" style="width: 100%; height: 100%;"></div>
+            <div class="offers row mx-auto d-flex flex-row justify-content-center">
+                <div th:each="e: ${ordersCountPerEmployee}" class="card col-sm-6 col-md-3  col-lg-4 m-1 p-0">
+                    <div class="card-img-top-wrapper">
+                        <img class="card-img-top" src="/img/user-picture.jpg" alt="User">
+                    </div>
+                    <div class="card-body pb-1">
+                        <h5 class="card-title" th:text="|Employee: ${e.getKey()}|">Car brand</h5>
+                        <h6 class="card-title" th:text="|Number of orders closed: ${e.getValue()}|"> </h6>
+                    </div>
+                    <!--                    <ul class="offer-details list-group list-group-flush">-->
+                    <!--                        <li class="list-group-item">-->
+                    <!--                            <div class="card-text"><span th:text="'$' + ${product.sellPrice}"></span></div>-->
+
+                    <!--                        </li>-->
+                    <!--                    </ul>-->
+<!--                    <button class="btn-dark" th:id="${product.id}"  th:value="${product.id}">Add Item</button>-->
 
                 </div>
             </div>

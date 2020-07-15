@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+
+
+<body>
+<div class="container ">
+    <th:block th:include="~{fragments/user-navbar}"></th:block>
+    <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
+        <h1 class="w-100 text-light text-right">Order Details</h1>
+    </div>
+    <div class="row tm-mt-big">
+        <div class="col-12 mx-auto tm-login-col">
+            <div class="bg-white tm-block">
+                <div class="row mt-2">
+                    <div class="col-12 align-content-center">
+                        <div class="card" style="width: 22rem;">
+                            <img src="/img/coffee-shop-details.jpg" class="tm-product-img-dummy text-center" alt="...">
+                            <div class="card-body">
+                                <h2 th:text="|Order ID: ${order.id}|" class="text-center"></h2>
+                                    <ul>
+                                        <li th:each="p:${order.getProducts()}" th:text="|${p.name} : ${p.sellPrice}'$' |"></li>
+                                    </ul>
+                                <h5 class="text-center" th:text="|Total: ${total}'$'|"></h5>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block th:include="~{fragments/footer}"></th:block>
+</body>
+
+</html>

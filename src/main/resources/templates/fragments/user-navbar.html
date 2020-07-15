@@ -12,7 +12,7 @@
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item" >
                     <a class="nav-link" th:href="@{/users/profile}">
-                        <span class="nav-item" th:text=" 'Hello ' + ${username}"></span>
+                        <span class="nav-item" th:text=" 'Hello ' + ${#authentication.name}"></span>
                     </a>
                 </li>
 
@@ -21,7 +21,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/orders/find}">Find existing order</a>
+                    <a class="nav-link" th:href="@{/orders/find}">Find order</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/orders/all}">Show me all orders</a>
