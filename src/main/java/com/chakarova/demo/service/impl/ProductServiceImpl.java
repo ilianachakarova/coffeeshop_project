@@ -1,6 +1,7 @@
 package com.chakarova.demo.service.impl;
 
 import com.chakarova.demo.dao.ProductRepository;
+import com.chakarova.demo.error.ProductNotFoundError;
 import com.chakarova.demo.model.binding.ProductAddBindingModel;
 import com.chakarova.demo.model.entity.Product;
 import com.chakarova.demo.model.entity.enums.CategoryNames;
@@ -68,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductServiceModel findProductById(Long id) {
-        Product product = this.productRepository.findById(id).orElseThrow(()->new IllegalArgumentException("No such product"));
+        Product product = this.productRepository.findById(id).orElseThrow(()->new ProductNotFoundError("There isi no product with id "+id+"!"));
 
         return this.modelMapper.map(product,ProductServiceModel.class);
     }

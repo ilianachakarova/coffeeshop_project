@@ -2,6 +2,7 @@ package com.chakarova.demo.service.impl;
 
 import com.chakarova.demo.dao.OrderRepository;
 import com.chakarova.demo.dao.ProductRepository;
+import com.chakarova.demo.error.OrderNotFoundError;
 import com.chakarova.demo.model.entity.Order;
 import com.chakarova.demo.model.entity.Product;
 import com.chakarova.demo.model.entity.User;
@@ -84,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
                 .map(order -> this.modelMapper.map(
                         order,OrderServiceModel.class
                 ))
-                .orElseThrow(()->new IllegalArgumentException());
+                .orElseThrow(()->new OrderNotFoundError("There is no order with id "+orderId + "!"));
     }
 
     @Override

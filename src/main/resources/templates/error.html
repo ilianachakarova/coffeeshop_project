@@ -11,6 +11,10 @@
     <th:block th:include="~{fragments/navbar}"></th:block>
     <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
         <h1 class="w-100 text-light text-danger">Opps..Something went wrong... </h1>
+        <hr class="hr-2 bg-dark ">
+        <div class="text-center">
+            <h3 th:text="${message}" style="color: red;"></h3>
+        </div>
 
     </div>
     <th:block th:include="~{fragments/footer}"></th:block>
