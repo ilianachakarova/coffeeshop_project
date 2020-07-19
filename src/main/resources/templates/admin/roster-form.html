@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+
+
+<body>
+<div class="container ">
+    <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
+        <h1 class="w-100 text-light text-right">Roster</h1>
+    </div>
+    <div class="row tm-mt-big">
+        <div class="col-12 mx-auto">
+
+                <div class="row mt-2">
+                    <div class="col-12">
+    <form th:action="@{/admin/roster}" th:object="${rosterAddBindingModel}"  method="post" class="col-12">
+        <table class="table-custom col-12">
+            <tr>
+                <th>Employee</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+            </tr>
+            <tr th:each="e : ${employees}" class="col-12" style="width: 750px">
+                <td th:class="col-1">
+                    <input readonly th:text="${e.username}" style="width: 110px" type="text" name="username" id="username">
+                </td>
+                <td class="col-1">
+                    <input style="width: 110px" type="text" name="monday" id="monday" th:field="*{monday}">
+                </td>
+                <td class=" col-1">
+                    <input style="width: 110px" type="text" name="tuesday" id="tuesday" th:field="*{tuesday}">
+                </td>
+                <td class="col-1">
+                    <input style="width: 110px" type="text" name="wednesday" id="wednesday" th:field="*{wednesday}">
+                </td>
+                <td class="col-1">
+                    <input style="width: 110px" type="text" name="thursday" id="thursday" th:field="*{thursday}">
+                </td>
+                <td class="col-1">
+                    <input style="width: 110px" type="text" name="friday" id="friday" th:field="*{friday}">
+                </td>
+                <td class="col-1">
+                    <input style="width: 110px" type="text" name="saturday" id="saturday" th:field="*{saturday}">
+                </td>
+
+            </tr>
+
+        </table>
+        <div class="input-group mt-3">
+            <button type="submit" class="btn btn-primary d-inline-block mx-auto">Upload Roster</button>
+        </div>
+    </form>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+</div>
+<th:block th:include="~{fragments/footer}"></th:block>
+</body>
+
+</html>

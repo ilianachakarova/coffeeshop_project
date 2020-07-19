@@ -1,6 +1,7 @@
 package com.chakarova.demo.web;
 
 import com.chakarova.demo.model.binding.FindOrderBindingModel;
+import com.chakarova.demo.model.entity.Product;
 import com.chakarova.demo.model.service.OrderServiceModel;
 import com.chakarova.demo.model.view.OrderViewModel;
 import com.chakarova.demo.model.view.ProductDetailsViewModel;
@@ -22,8 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -59,8 +65,11 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     public ModelAndView  showCurrentReceipt(ModelAndView modelAndView, Principal principal) throws InterruptedException {
         modelAndView.addObject("username", principal.getName());
-        OrderViewModel orderViewModel = this.mapToOrderViewModel(this.orderService.findLastSavedOrder());
-        modelAndView.addObject("order",orderViewModel);
+        OrderServiceModel model = this.orderService.findLastSavedOrder();
+        modelAndView.addObject("order",model);
+        modelAndView.addObject("total",model.getProducts().stream().map(Product::getSellPrice).reduce(
+               BigDecimal.ZERO, BigDecimal::add
+        ));
         modelAndView.setViewName("orders/order-receipt");
         return modelAndView;
     }
@@ -71,11 +80,12 @@ public class OrderController {
         if(!model.containsAttribute("findOrderBindingModel")){
             model.addAttribute("findOrderBindingModel",new FindOrderBindingModel());
         }
+
        return "orders/order-find";
     }
 
     @PostMapping("/find")
-    public String confirmFindOrder( @ModelAttribute("findOrderBindingModel") FindOrderBindingModel findOrderBindingModel,
+    public String confirmFindOrder(@Valid @ModelAttribute("findOrderBindingModel") FindOrderBindingModel findOrderBindingModel,
                                    BindingResult bindingResult, RedirectAttributes redirectAttributes,
                                     Principal principal, Model model){
         if(bindingResult.hasErrors()){
@@ -90,24 +100,40 @@ public class OrderController {
         }
         OrderServiceModel order = this.orderService.findOrderById(findOrderBindingModel.getOrderId());
         if(!order.getEmployee().getUsername().equals(principal.getName())){
-            model.addAttribute("incorrectPd",true);
+            if(!model.containsAttribute("incorrectPd")){
+                model.addAttribute("incorrectPd",true);
+            }
+
             return "redirect:/orders/find";
         }else {
             model.addAttribute("order",order);
             model.addAttribute("total", OrderServiceImpl.findTotalPrice(order.getProducts()));
             return "orders/order-details";
         }
+
     }
 
-    private OrderViewModel mapToOrderViewModel(OrderServiceModel lastSavedOrder) {
-        BigDecimal total = OrderServiceImpl.findTotalPrice(lastSavedOrder.getProducts());
-        OrderViewModel orderViewModel = new OrderViewModel();
-        orderViewModel.setId(lastSavedOrder.getId());
-        orderViewModel.setEmployee(lastSavedOrder.getEmployee().getUsername());
-        orderViewModel.setTotal(total);
-        orderViewModel.setTimeClosed(lastSavedOrder.getTimeClosed().toString());
-        orderViewModel.setProducts(lastSavedOrder.getProducts()
-                .stream().map(p->this.modelMapper.map(p, ProductDetailsViewModel.class)).collect(Collectors.toList()));
-        return orderViewModel;
+    @GetMapping("/all")
+    @PreAuthorize("isAuthenticated()")
+    public String showOrdersByEmployee(Model model,Principal principal){
+        List<OrderViewModel>orders = this.orderService.findAllOrdersByEmployee(principal.getName());
+        model.addAttribute("orders",orders);
+
+        return "orders/orders-employee-all";
     }
+
+    @GetMapping("/daily-balance")
+    @PreAuthorize("isAuthenticated()")
+    public ModelAndView modelAndView(Principal principal, ModelAndView modelAndView){
+        BigDecimal employeeBalance =
+                this.orderService.findTotalRevenueForOneEmployeeForPeriod
+                        (principal.getName(),LocalDateTime.of(LocalDate.now(), LocalTime.MIN), LocalDateTime.now());
+        modelAndView.addObject("employeeBalance",employeeBalance);
+        modelAndView.addObject("total",this.orderService.findTotalRevenueForPeriod(LocalDateTime.of(LocalDate.now(), LocalTime.MIN), LocalDateTime.now()));
+      modelAndView.setViewName("users/daily-balance");
+
+        return modelAndView;
+    }
+
+
 }

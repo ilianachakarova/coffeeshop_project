@@ -1,6 +1,7 @@
 package com.chakarova.demo.web;
 
 import com.chakarova.demo.model.binding.ProductAddBindingModel;
+import com.chakarova.demo.model.binding.RosterAddBindingModel;
 import com.chakarova.demo.model.binding.SalesBindingModel;
 import com.chakarova.demo.model.binding.UpdateUserBindingModel;
 import com.chakarova.demo.model.entity.Role;
@@ -10,6 +11,7 @@ import com.chakarova.demo.model.view.ProductDetailsViewModel;
 import com.chakarova.demo.model.view.UsersAllViewModel;
 import com.chakarova.demo.service.OrderService;
 import com.chakarova.demo.service.ProductService;
+import com.chakarova.demo.service.RosterService;
 import com.chakarova.demo.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +34,15 @@ public class AdminController {
     private final UserService userService;
     private final ProductService productService;
     private final ModelMapper modelMapper;
+    private final RosterService rosterService;
     private final OrderService orderService;
 
     @Autowired
-    public AdminController(UserService userService, ProductService productService, ModelMapper modelMapper, OrderService orderService) {
+    public AdminController(UserService userService, ProductService productService, ModelMapper modelMapper, RosterService rosterService, OrderService orderService) {
         this.userService = userService;
         this.productService = productService;
         this.modelMapper = modelMapper;
+        this.rosterService = rosterService;
         this.orderService = orderService;
     }
 
@@ -158,6 +162,23 @@ public class AdminController {
                 findRevenueByEmployee(salesBindingModel.getStartDate(),salesBindingModel.getEndDate()));
 
         return "admin/sales";
+    }
+
+    @GetMapping("/roster")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
+    public String roster(Model model){
+        model.addAttribute("employees",userService.findAllUsers().stream().filter(u->u.getRoles().contains("ROLE_USER")).collect(Collectors.toList()));
+        if(!model.containsAttribute("rosterAddBindingModel")){
+            model.addAttribute("rosterAddBindingModel",new RosterAddBindingModel());
+        }
+        return "admin/roster-form";
+    }
+
+    @PostMapping("/roster")
+    public String rosterConfirm(Model model,@ModelAttribute ("rosterAddBindingModel")RosterAddBindingModel rosterAddBindingModel
+    ){
+        this.rosterService.addRoster(rosterAddBindingModel);
+        return "redirect:/home";
     }
 
 

@@ -1,12 +1,13 @@
 package com.chakarova.demo.model.view;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderViewModel {
     private Long id;
-    private List<ProductDetailsViewModel>products;
-    private String timeClosed;
+    private List<String>products;
+    private LocalDateTime timeClosed;
     private String employee;
     private BigDecimal total;
 
@@ -21,13 +22,7 @@ public class OrderViewModel {
         this.id = id;
     }
 
-    public List<ProductDetailsViewModel> getProducts() {
-        return products;
-    }
 
-    public void setProducts(List<ProductDetailsViewModel> products) {
-        this.products = products;
-    }
 
     public String getEmployee() {
         return employee;
@@ -45,11 +40,19 @@ public class OrderViewModel {
         this.total = total;
     }
 
-    public String getTimeClosed() {
+    public LocalDateTime getTimeClosed() {
         return timeClosed;
     }
 
-    public void setTimeClosed(String timeClosed) {
+    public void setTimeClosed(LocalDateTime timeClosed) {
         this.timeClosed = timeClosed;
+    }
+
+    public List<String> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<String> products) {
+        this.products = products;
     }
 }

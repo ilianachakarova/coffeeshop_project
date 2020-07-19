@@ -2,6 +2,7 @@ package com.chakarova.demo.service;
 
 import com.chakarova.demo.model.entity.User;
 import com.chakarova.demo.model.service.OrderServiceModel;
+import com.chakarova.demo.model.view.OrderViewModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,9 +16,11 @@ public interface OrderService {
     OrderServiceModel findLastSavedOrder() throws InterruptedException;
     List<OrderServiceModel>findOrdersInTimeRange(LocalDateTime t1,LocalDateTime t2);
     BigDecimal findTotalRevenueForPeriod(LocalDateTime t1,LocalDateTime t2);
+    BigDecimal findTotalRevenueForOneEmployeeForPeriod(String username, LocalDateTime t1, LocalDateTime t2);
     Map<String,Integer> findRevenueByEmployee(LocalDateTime t1, LocalDateTime t2);
 
     OrderServiceModel findOrderById(Long orderId);
+    List<OrderViewModel>findAllOrdersByEmployee(String username);
 
 }
 

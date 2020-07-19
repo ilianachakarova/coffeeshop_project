@@ -7,6 +7,7 @@ import com.chakarova.demo.model.entity.Order;
 import com.chakarova.demo.model.entity.Product;
 import com.chakarova.demo.model.entity.User;
 import com.chakarova.demo.model.service.OrderServiceModel;
+import com.chakarova.demo.model.view.OrderViewModel;
 import com.chakarova.demo.model.view.UsersAllViewModel;
 import com.chakarova.demo.service.OrderService;
 import com.chakarova.demo.service.ProductService;
@@ -80,6 +81,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public BigDecimal findTotalRevenueForOneEmployeeForPeriod(String username, LocalDateTime t1, LocalDateTime t2) {
+        List<OrderServiceModel> allOrdersForPeriodForUser = this.findOrdersInTimeRange(t1, t2).stream()
+                .filter(o->o.getEmployee().getUsername().equals(username)).collect(Collectors.toList());
+        System.out.println();
+       return allOrdersForPeriodForUser.stream().map(o->OrderServiceImpl.findTotalPrice(o.getProducts()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    }
+
+    @Override
     public OrderServiceModel findOrderById(Long orderId) {
         return this.orderRepository.findById(orderId)
                 .map(order -> this.modelMapper.map(
@@ -100,6 +111,18 @@ public class OrderServiceImpl implements OrderService {
 
         });
         return ordersPerEmployee;
+    }
+
+    @Override
+    public List<OrderViewModel> findAllOrdersByEmployee(String username) {
+        return this.orderRepository.findAllByEmployee_Username(username)
+                .stream().map(o->{
+                    OrderViewModel model = this.modelMapper.map(o,OrderViewModel.class);
+                    model.setEmployee(o.getEmployee().getUsername());
+                    model.setProducts(o.getProducts().stream().
+                            map(p->p.getName()).collect(Collectors.toList()));
+                    return model;
+                }).collect(Collectors.toList());
     }
 
     public static BigDecimal findTotalPrice(List<Product> products) {

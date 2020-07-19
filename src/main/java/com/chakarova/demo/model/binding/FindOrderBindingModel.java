@@ -1,7 +1,7 @@
 package com.chakarova.demo.model.binding;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 public class FindOrderBindingModel {
     private Long orderId;
@@ -10,7 +10,7 @@ public class FindOrderBindingModel {
     public FindOrderBindingModel() {
     }
     @NotNull(message = "This field is required")
-    @Min(value = 1,message = "Id should be positive")
+    @Positive(message = "Id should be positive")
     public Long getOrderId() {
         return orderId;
     }

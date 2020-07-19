@@ -17,4 +17,6 @@ public interface UserService extends UserDetailsService {
     void updateUser(UpdateUserBindingModel updateUserBindingModel, Long id);
 
     User findUserByUsername(String name);
+
+
 }

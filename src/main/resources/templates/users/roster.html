@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+
+
+<body>
+<div class="container ">
+    <th:block sec:authorize="hasRole('ROLE_USER')">
+        <th:block th:include="~{fragments/user-navbar}"></th:block>
+    </th:block>
+    <th:block sec:authorize="hasAnyRole('ROLE_ROOT')">
+        <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    </th:block>
+    <th:block sec:authorize="hasAnyRole('ROLE_ADMIN')">
+        <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    </th:block>
+    <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
+        <h1 class="w-100 text-light text-right">Roster</h1>
+    </div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <table class="table-custom col-12">
+            <tr>
+                <th>Employee</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+            </tr>
+            <tr th:each="e : ${rosterData}" class="col-12" style="width: 750px">
+                <td  style="width: 110px"  th:text="${e.getKey()}" id="username">
+                </td>
+                <td style="width: 110px" th:text="${e.getValue().get(0)}"/>
+                <td style="width: 110px"  th:text="${e.getValue().get(1)}"/>
+                <td style="width: 110px"  th:text="${e.getValue().get(2)}"/>
+                <td style="width: 110px"  th:text="${e.getValue().get(3)}"/>
+                <td style="width: 110px"  th:text="${e.getValue().get(4)}"/>
+                <td style="width: 110px"  th:text="${e.getValue().get(5)}"/>
+
+            </tr>
+
+        </table>
+    </div>
+</div>
+</div>
+<th:block th:include="~{fragments/footer}"></th:block>
+</body>
+
+</html>

@@ -30,11 +30,12 @@ public class LoggingFilter implements Filter {
     }
 
     PrintWriter printWriter = new PrintWriter(out,true);
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
-        printWriter.println(Instant.now().toString() + ": "+ request.getAuthType()+ " " + request.getRequestURL().toString());
+        printWriter.println(Instant.now().toString() + ": "+ request.getMethod()+ " " + request.getRequestURL().toString());
 
 
         filterChain.doFilter(servletRequest,servletResponse);

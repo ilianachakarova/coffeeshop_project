@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+
+
+<body>
+<div class="container ">
+    <th:block sec:authorize="hasRole('ROLE_USER')">
+        <th:block th:include="~{fragments/user-navbar}"></th:block>
+    </th:block>
+
+    <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
+        <h1 class="w-100 text-light text-right">My daily revenue</h1>
+    </div>
+    <div class="row tm-mt-big align-content-center">
+
+                    <div class="col-6 justify-content-center">
+                        <div class="card" style="width: 22rem;">
+                            <img src="/img/fan-of-dollars.jpg" class="tm-product-img-dummy text-center" alt="...">
+                            <div class="card-body">
+                                <h1>Your revenue for today so far:</h1>
+                                <h1 th:text="${employeeBalance}"></h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 align-content-center">
+                        <div id="columnchart_values"></div>
+                    </div>
+
+    </div>
+</div>
+    <th:block th:include="~{fragments/footer}"></th:block>
+</body>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ["Me", "Total", { role: "style" } ],
+            ["Me", [[${employeeBalance}]], "#b87333"],
+            ["Team", [[${total}]], "#FFDF00"],
+
+        ]);
+
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+            { calc: "stringify",
+                sourceColumn: 1,
+                type: "string",
+                role: "annotation" },
+            2]);
+
+        var options = {
+            title: "My revenue vs Team revenue",
+            width: 600,
+            height: 400,
+            bar: {groupWidth: "95%"},
+            legend: { position: "none" },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+        chart.draw(view, options);
+    }
+</script>
+
+</html>
