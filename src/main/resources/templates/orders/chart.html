@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block  th:remove="tag" th:include="~{fragments/head}"></th:block>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</head>
+
+
+<body>
+<div class="container ">
+    <th:block sec:authorize="hasRole('ROLE_USER')">
+        <th:block  th:remove="tag" th:include="~{fragments/user-navbar}"></th:block>
+    </th:block>
+    <th:block sec:authorize="hasAnyRole('ROLE_ROOT')">
+        <th:block  th:remove="tag" th:include="~{fragments/admin-navbar}"></th:block>
+    </th:block>
+    <th:block sec:authorize="hasAnyRole('ROLE_ADMIN')">
+        <th:block  th:remove="tag" th:include="~{fragments/admin-navbar}"></th:block>
+    </th:block>
+    <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
+        <h1 class="w-100 text-light text-right">Chart</h1>
+    </div>
+
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script type="text/javascript">
+
+
+            var dataPointsList = [[${dataPoints}]];
+
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "dark2",
+                title:{
+                    text: "Revenue over Time"
+                },
+                // axisY:{
+                //     includeZero: false
+                // },
+                data: [{
+                    type: "line",
+                   xValueType: "text",
+                    dataPoints: [{ x: 10, y: 71 },
+                        { x: 20, y: 55 },
+                        { x: 30, y: 50 },
+                        { x: 40, y: 65 },
+                        { x: 50, y: 71 },
+                        { x: 60, y: 68 },
+                        { x: 70, y: 38 },
+                        { x: 80, y: 92, indexLabel: "Highest" },
+                        { x: 90, y: 54 },
+                        { x: 100, y: 60 },
+                        { x: 110, y: 21 },
+                        { x: 120, y: 49 },
+                        { x: 130, y: 36 }]
+                }]
+            });
+
+            /* Update dataPoints from AJAX and render the chart*/
+           chart.options.data[0].dataPoints = (dataPointsList);
+
+            chart.render();
+
+
+        /*
+         To get data from Service and to update chart, perform a AJAX request to get data, update the chart with received data and re-render the chart
+         Please refer the following links for more info on accessing data / rest-service
+         https://www.thymeleaf.org/doc/articles/springmvcaccessdata.html
+         https://spring.io/guides/gs/rest-service/
+         */
+        /*<![CDATA[*/
+        /*$.get( "/dataPoints", function( data ) {*/
+        /* Update dataPoints from AJAX and render the chart*/
+        /*[+
+            //chart.options.data[0].dataPoints = JSON.parse([[${session.dataPoints}]]);
+            //chart.render();
+         +]*/
+        /*});*/
+        /*]]>*/
+    </script>
+</div>
+<th:block  th:include="~{fragments/footer}"></th:block>
+</body>
+
+
+</html>
