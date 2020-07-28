@@ -133,7 +133,7 @@ public class AdminController {
     @GetMapping("product/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id) {
         this.productService.deleteProduct(id);
-        return "redirect:/products/all";
+        return "redirect:/home";
     }
 
     @GetMapping("/revenue")

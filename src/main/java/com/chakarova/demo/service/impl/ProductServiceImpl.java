@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+//@EnableAspectJAutoProxy
 public class ProductServiceImpl implements ProductService {
     private final ModelMapper modelMapper;
     private final ProductRepository productRepository;
@@ -85,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
-        this.productRepository.deleteById(id);
+     this.productRepository.deleteProductById(id);
     }
 
     @Override

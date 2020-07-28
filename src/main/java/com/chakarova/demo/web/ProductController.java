@@ -55,7 +55,7 @@ public class ProductController {
         }
 
         this.productService.addProduct(productAddBindingModel);
-        return "redirect:/home";
+        return "redirect:/product/all";
     }
 
     @GetMapping("/all")
