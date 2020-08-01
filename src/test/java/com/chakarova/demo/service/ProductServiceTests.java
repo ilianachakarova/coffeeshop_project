@@ -156,6 +156,67 @@ public class ProductServiceTests {
 
         Assert.assertEquals(products.size(),1);
     }
+    @Test
+    public void productService_findAllCakes_ShouldWorkCorrectly() throws IOException {
+        ProductService productServiceToTest = new ProductServiceImpl(modelMapper,productRepository,categoryService,cloudinaryService);
+        ProductAddBindingModel product =  setUpProductCake();
+        productServiceToTest.addProduct(product);
+
+        List<ProductAllViewModel>products = productServiceToTest.findAllCakes();
+
+        Assert.assertEquals(products.size(),1);
+    }
+
+    private ProductAddBindingModel setUpProductCake() {
+        ProductAddBindingModel model = new ProductAddBindingModel();
+        Category category = new Category();
+        category.setCategory(CategoryNames.CAKE);
+        this.categoryRepository.saveAndFlush(category);
+        when(categoryService.findCategoryByName(CategoryNames.CAKE)).thenReturn(category);
+
+        model.setId(1L);
+        model.setName("sample");
+        model.setDescription("asd asd asd asd asd asd");
+        model.setCategory(CategoryNames.CAKE.name());
+        model.setQuantity(100);
+        model.setDeliveryPrice(BigDecimal.valueOf(1.0));
+        model.setSellPrice(BigDecimal.valueOf(2.0));
+        MockMultipartFile imageFile = new MockMultipartFile("data", "filename.txt", "img", "some xml".getBytes());
+        model.setPictureUrl(imageFile);
+
+        return model;
+    }
+
+    @Test
+    public void productService_findAllSnacks_ShouldWorkCorrectly() throws IOException {
+        ProductService productServiceToTest = new ProductServiceImpl(modelMapper,productRepository,categoryService,cloudinaryService);
+        ProductAddBindingModel product =  setUpProductSnack();
+        productServiceToTest.addProduct(product);
+
+        List<ProductAllViewModel>products = productServiceToTest.findAllSnacks();
+
+        Assert.assertEquals(products.size(),1);
+    }
+
+    private ProductAddBindingModel setUpProductSnack() {
+        ProductAddBindingModel model = new ProductAddBindingModel();
+        Category category = new Category();
+        category.setCategory(CategoryNames.SNACK);
+        this.categoryRepository.saveAndFlush(category);
+        when(categoryService.findCategoryByName(CategoryNames.SNACK)).thenReturn(category);
+
+        model.setId(1L);
+        model.setName("sample");
+        model.setDescription("asd asd asd asd asd asd");
+        model.setCategory(CategoryNames.SNACK.name());
+        model.setQuantity(100);
+        model.setDeliveryPrice(BigDecimal.valueOf(1.0));
+        model.setSellPrice(BigDecimal.valueOf(2.0));
+        MockMultipartFile imageFile = new MockMultipartFile("data", "filename.txt", "img", "some xml".getBytes());
+        model.setPictureUrl(imageFile);
+
+        return model;
+    }
 
     //todo: findAllCakes, findAllSnacks
 
@@ -199,15 +260,15 @@ public class ProductServiceTests {
         Assert.assertEquals(this.productRepository.count(),0);
     }
 
-    @Test(expected = Exception.class)
-    public void productService_deleteProduct_shouldThrowWithInvalidInput() throws IOException {
-        ProductService productServiceToTest = new ProductServiceImpl(modelMapper,productRepository,categoryService,cloudinaryService);
-        ProductAddBindingModel product =  setUpProduct();
-        productServiceToTest.addProduct(product);
-
-        productServiceToTest.deleteProduct(10L);
-
-    }
+//    @Test(expected = Exception.class)
+//    public void productService_deleteProduct_shouldThrowWithInvalidInput() throws IOException {
+//        ProductService productServiceToTest = new ProductServiceImpl(modelMapper,productRepository,categoryService,cloudinaryService);
+//        ProductAddBindingModel product =  setUpProduct();
+//        productServiceToTest.addProduct(product);
+//
+//        productServiceToTest.deleteProduct(10L);
+//
+//    }
     @Test
     public void productService_updateProduct_shouldWorkCorrectlyWithValidInput() throws IOException {
 
