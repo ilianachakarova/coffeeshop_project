@@ -35,18 +35,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductServiceModel findProductByName(String name) {
-        return this.modelMapper.map(this.productRepository.findByName(name),ProductServiceModel.class);
-    }
-
-    @Override
-    public List<ProductServiceModel> findProductsByCategory(CategoryNames category) {
-        return this.productRepository.findByCategory(this.categoryService.findCategoryByName(category))
-                .stream().map(x->this.modelMapper.map(x,ProductServiceModel.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public ProductServiceModel addProduct(ProductAddBindingModel productAddBindingModel) throws IOException {
         ProductServiceModel productServiceModel = this.modelMapper.map(productAddBindingModel,ProductServiceModel.class);
         productServiceModel.setCategory(this.categoryService.findCategoryByName(CategoryNames.valueOf(productAddBindingModel.getCategory())));
@@ -70,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductServiceModel findProductById(Long id) {
-        Product product = this.productRepository.findById(id).orElseThrow(()->new ProductNotFoundError("There isi no product with id "+id+"!"));
+        Product product = this.productRepository.findById(id).orElseThrow(()->new ProductNotFoundError("There is no product with id "+id+"!"));
 
         return this.modelMapper.map(product,ProductServiceModel.class);
     }
@@ -85,6 +73,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+
     public void deleteProduct(Long id) {
      this.productRepository.deleteProductById(id);
     }

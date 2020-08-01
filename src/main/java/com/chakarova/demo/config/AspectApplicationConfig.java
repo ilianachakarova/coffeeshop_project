@@ -1,5 +1,6 @@
 package com.chakarova.demo.config;
 
+import com.chakarova.demo.model.entity.Product;
 import com.chakarova.demo.model.service.ProductServiceModel;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -42,6 +43,14 @@ public class AspectApplicationConfig {
 
         printWriter.println(Instant.now() + " New item added: "+ returnValue.getName());
 
+    }
+
+    @AfterReturning(pointcut = "execution(* com.chakarova.demo.service.impl.ProductServiceImpl.deleteProduct(..))",returning = "returnValue")
+    public void deleteProductRecord(@NotNull Product returnValue){
+
+        printWriter.println(Instant.now() + " The following item has been deleted: "+ returnValue.getName());
 
     }
+
+
 }

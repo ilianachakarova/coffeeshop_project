@@ -21,4 +21,6 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Modifying
     @Query("delete from Product p where p.id =:id")
     void deleteProductById(@Param(value="id")Long id);
+
+
 }

@@ -20,10 +20,10 @@
     <div class="container mt-lg-5  bg-transparent h-100">
         <div class="row mb-3 mx-auto">
             <div class='button-holder mt-5'>
-                <button id='fetch-button-hot' class='btn btn-info justify-content-center'>Fetch Hot Drinks</button>
-                <button id='fetch-button-cold' class='btn btn-info justify-content-center'>Fetch Cold Drinks</button>
-                <button id='fetch-button-snack' class='btn btn-info justify-content-center'>Fetch Snacks</button>
-                <button id='fetch-button-cake' class='btn btn-info justify-content-center'>Fetch Cakes</button>
+                <button id='fetch-button-hot' class='btn btn-info justify-content-center'>Hot Drinks Menu</button>
+                <button id='fetch-button-cold' class='btn btn-info justify-content-center'>Cold Drinks Menu</button>
+                <button id='fetch-button-snack' class='btn btn-info justify-content-center'>Snacks Menu</button>
+                <button id='fetch-button-cake' class='btn btn-info justify-content-center'>Cakes Menu</button>
                 <button id='clear-button' class='btn btn-secondary'>Clear Data</button>
 
             </div>
@@ -98,7 +98,7 @@
                     <th>Category</th>
                     <th>Picture</th>
                     <th>Quantity</th>
-                    <th>Add</th>
+
                 </tr>`;
         $('#table-id').append(divHeading);
         fetch('http://localhost:8000/fetch/'+category)
@@ -110,12 +110,7 @@
                             <th>${x.category}</th>
                             <th><img src="${x.pictureUrl}" class="img-thumbnail img-table"></th>
                             <th>${x.quantity}</th>
-                            <th>
-                            <form th:action="@{/orders/add-product/{id}(id=${x.id})} method="post">
-                            <button type="button" class="btn btn-success">Add</button>
-                            </form>
 
-                            </th>
                             </tr>`
                 $('#table-id').append(divColumn);
 
