@@ -7,7 +7,9 @@ import com.chakarova.demo.model.entity.Role;
 import com.chakarova.demo.model.entity.User;
 import com.chakarova.demo.model.entity.enums.CategoryNames;
 import com.chakarova.demo.model.entity.enums.RoleNames;
+import com.chakarova.demo.model.service.OrderServiceModel;
 import com.chakarova.demo.model.service.ProductServiceModel;
+import com.chakarova.demo.model.view.UsersAllViewModel;
 import com.chakarova.demo.service.impl.OrderServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,10 +25,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -84,11 +89,11 @@ public class OrderServiceTests {
         user.setLastName("test");
         user.setEmail("test@abv.bg");
         user.setAddress("test");
-        Role role = new Role("ROLE_ROOT");
+        Role role = new Role("ROLE_USER");
         roleRepository.saveAndFlush(role);
-        when(roleService.findRoleByName("ROLE_ROOT")).thenReturn(role);
+        when(roleService.findRoleByName("ROLE_USER")).thenReturn(role);
 
-        user.setAuthorities(Set.of(roleService.findRoleByName(RoleNames.ROLE_ROOT.name())));
+        user.setAuthorities(Set.of(roleService.findRoleByName(RoleNames.ROLE_USER.name())));
         user.setBirthDate(LocalDate.of(1994, 2, 2));
         user.setId(1L);
 
@@ -110,9 +115,203 @@ public class OrderServiceTests {
         orderServiceToTest.createOrder(productsList,setUpUser());
 
         Assert.assertEquals(orderRepository.count(),1);
+        Assert.assertNotEquals((orderRepository.findAll().get(0).getProducts().get(0).getQuantity()),setupProduct().getQuantity());
     }
 
-    
+    @Test
+    public void orderService_findLastOrder_shouldReturnCorrectOrder() throws InterruptedException {
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+
+       OrderServiceModel model = orderServiceToTest.findLastSavedOrder();
+       Assert.assertEquals(orderRepository.findAll().get(0).getProducts().get(0).getName(),model.getProducts().get(0).getName());
+       Assert.assertEquals(orderRepository.findAll().get(0).getEmployee(),model.getEmployee());
+       Assert.assertEquals(orderRepository.findAll().get(0).getTimeClosed(),model.getTimeClosed());
+    }
+
+    @Test
+    public void productService_findOrdersInTimeRange_shouldWorkCorrectlyWithValidInput() throws InterruptedException {
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        LocalDateTime t1 = LocalDateTime.now().minusMinutes(2L);
+        LocalDateTime t2 = LocalDateTime.now();
+
+        LocalDateTime actual = orderRepository.findAll().get(0).getTimeClosed();
+
+        List<OrderServiceModel>orders =  orderServiceToTest.findOrdersInTimeRange(t1,t2);
+
+        Assert.assertEquals(orders.size(),1);
+    }
+
+    @Test(expected = Exception.class)
+    public void orderService_findOrdersInTimeRange_shouldThrowWithInvalidInput(){
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        LocalDateTime t1 = null;
+        LocalDateTime t2 = null;
+
+        orderServiceToTest.findOrdersInTimeRange(t1,t2);
+
+    }
+
+    @Test
+    public void orderService_findTotalRevenueForPeriod_shouldWorkCorrectlyWithValidInput(){
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        LocalDateTime t1 = LocalDateTime.now().minusMinutes(2L);
+        LocalDateTime t2 = LocalDateTime.now();
+
+        BigDecimal total = orderServiceToTest.findTotalRevenueForPeriod(t1,t2);
+
+        Assert.assertEquals(total,orderRepository.findAll().get(0).getTotalPrice());
+    }
+    @Test(expected = Exception.class)
+    public void orderService_findRevenueInTimeRange_shouldThrowWithInvalidInput(){
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        LocalDateTime t1 = null;
+        LocalDateTime t2 = null;
+
+        orderServiceToTest.findTotalRevenueForPeriod(t1,t2);
+
+    }
+
+    @Test
+    public void orderService_findTotalRevenueForOneEmployeeForPeriod_shouldWorkCorrectlyWithValidInput(){
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        LocalDateTime t1 = LocalDateTime.now().minusMinutes(2L);
+        LocalDateTime t2 = LocalDateTime.now();
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        User user = setUpUser();
+        when(userService.findUserByUsername(any())).thenReturn(user);
+        BigDecimal total = orderServiceToTest.findTotalRevenueForOneEmployeeForPeriod("test",t1,t2);
+
+        Assert.assertEquals(total,orderRepository.findAll().get(0).getTotalPrice());
+    }
+
+    @Test(expected = Exception.class)
+    public void orderService_findTotalRevenueForOneEmployeeForPeriod_shouldThrowWithInvalidInput(){
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        LocalDateTime t1 = LocalDateTime.now().minusMinutes(2L);
+        LocalDateTime t2 = LocalDateTime.now();
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        User user = setUpUser();
+        when(userService.findUserByUsername(any())).thenReturn(user);
+        BigDecimal total = orderServiceToTest.findTotalRevenueForOneEmployeeForPeriod(null,null,null);
+    }
+
+    @Test
+    public void orderService_findOrderById_shouldWorkCorrectlyWithValidInput(){
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        LocalDateTime t1 = LocalDateTime.now().minusMinutes(2L);
+        LocalDateTime t2 = LocalDateTime.now();
+
+        OrderServiceModel model = orderServiceToTest.findOrderById(1L);
+
+        Assert.assertEquals(model.getProducts().get(0).getName(),
+                orderRepository.findAll().get(0).getProducts().get(0).getName());
+        Assert.assertEquals(model.getEmployee(),orderRepository.findAll().get(0).getEmployee());
+        Assert.assertEquals(model.getTimeClosed(),orderRepository.findAll().get(0).getTimeClosed());
+        Assert.assertEquals(model.getId(),orderRepository.findAll().get(0).getId());
+
+    }
+
+    @Test
+    public void orderService_findRevenueByEmployee_shouldWorkCorrectly(){
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        LocalDateTime t1 = LocalDateTime.now().minusMinutes(2L);
+        LocalDateTime t2 = LocalDateTime.now();
+        UsersAllViewModel user  = this.modelMapper.map(setUpUser(),UsersAllViewModel.class);
+        List<UsersAllViewModel>users = List.of(user);
+       when(userService.findAllUsers()).thenReturn(users);
+
+       Map<String,Integer> result = orderServiceToTest.findRevenueByEmployee(t1,t2);
+
+       Assert.assertTrue(result.containsKey(user.getUsername()));
+
+    }
+
+    @Test(expected = Exception.class)
+    public void orderService_findRevenueByEmployee_shouldThrowWithInvalidData(){
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        LocalDateTime t1 = null;
+        LocalDateTime t2 = null;
+        UsersAllViewModel user  = this.modelMapper.map(setUpUser(),UsersAllViewModel.class);
+        List<UsersAllViewModel>users = List.of(user);
+        when(userService.findAllUsers()).thenReturn(users);
+
+        Map<String,Integer> result = orderServiceToTest.findRevenueByEmployee(t1,t2);
+
+        Assert.assertTrue(result.containsKey(user.getUsername()));
+
+    }
 }
 
 

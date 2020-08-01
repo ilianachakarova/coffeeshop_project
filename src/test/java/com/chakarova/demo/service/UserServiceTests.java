@@ -71,6 +71,8 @@ public class UserServiceTests {
         return userServiceToTest.register(user);
     }
 
+
+
     @Test
     public void userService_registerUser_returnsCorrectValueWithValidInput() {
         UserService userServiceToTest = new UserServiceImpl(this.userRepository, this.roleService, this.modelMapper, encoder);
