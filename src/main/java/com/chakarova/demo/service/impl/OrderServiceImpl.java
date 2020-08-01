@@ -120,7 +120,7 @@ public class OrderServiceImpl implements OrderService {
                     OrderViewModel model = this.modelMapper.map(o,OrderViewModel.class);
                     model.setEmployee(o.getEmployee().getUsername());
                     model.setProducts(o.getProducts().stream().
-                            map(p->p.getName()).collect(Collectors.toList()));
+                            map(Product::getName).collect(Collectors.toList()));
                     return model;
                 }).collect(Collectors.toList());
     }

@@ -9,6 +9,7 @@ import com.chakarova.demo.model.entity.enums.CategoryNames;
 import com.chakarova.demo.model.entity.enums.RoleNames;
 import com.chakarova.demo.model.service.OrderServiceModel;
 import com.chakarova.demo.model.service.ProductServiceModel;
+import com.chakarova.demo.model.view.OrderViewModel;
 import com.chakarova.demo.model.view.UsersAllViewModel;
 import com.chakarova.demo.service.impl.OrderServiceImpl;
 import org.junit.Assert;
@@ -312,6 +313,28 @@ public class OrderServiceTests {
         Assert.assertTrue(result.containsKey(user.getUsername()));
 
     }
+
+    @Test
+    public void orderService_findAllOrdersByEmployee_shouldWorkCorrectlyWithValidInput(){
+        OrderService orderServiceToTest =
+                new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
+        List<Long>productsList = new ArrayList<>();
+        productsList.add(1L);
+        ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
+        when(productService.findProductById(anyLong())).thenReturn(product);
+
+        orderServiceToTest.createOrder(productsList,setUpUser());
+        LocalDateTime t1 = LocalDateTime.now().minusMinutes(2L);
+        LocalDateTime t2 = LocalDateTime.now();
+        User user  = setUpUser();
+       when(userService.findUserByUsername(any())).thenReturn(user);
+
+        List<OrderViewModel> models = orderServiceToTest.findAllOrdersByEmployee("test");
+
+        Assert.assertEquals(models.size(),1);
+        Assert.assertEquals(models.get(0).getEmployee(),orderRepository.findAll().get(0).getEmployee().getUsername());
+    }
+
 }
 
 
