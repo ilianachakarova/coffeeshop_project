@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +71,12 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<OrderServiceModel> findOrdersInTimeRange(LocalDate t1, LocalDate t2) {
+        return this.orderRepository.findAllByTimeClosedBetween(t1.atStartOfDay(),t2.atStartOfDay()).stream()
+                .map(o -> this.modelMapper.map(o, OrderServiceModel.class))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public BigDecimal findTotalRevenueForPeriod(LocalDateTime t1, LocalDateTime t2) {
@@ -123,6 +130,11 @@ public class OrderServiceImpl implements OrderService {
                             map(Product::getName).collect(Collectors.toList()));
                     return model;
                 }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteAllOrders() {
+        this.orderRepository.deleteAll();
     }
 
     public static BigDecimal findTotalPrice(List<Product> products) {

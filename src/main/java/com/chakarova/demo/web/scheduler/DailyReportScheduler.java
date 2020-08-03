@@ -8,10 +8,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 @Component
 public class DailyReportScheduler {
@@ -22,11 +20,13 @@ public class DailyReportScheduler {
         this.orderService = orderService;
         this.dailyReportService = dailyReportService;
     }
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?") //every day
+    // @Scheduled(cron = "0 * * ? * *") //test
     public void saveDailyReport(){
-        LocalDateTime start = LocalDateTime.from(Instant.now().minus(24, ChronoUnit.HOURS));
-        LocalDateTime end = LocalDateTime.from(Instant.now());
+        LocalDateTime start = LocalDateTime.now().minusDays(1);
+        LocalDateTime end = LocalDateTime.now();
         BigDecimal revenue = orderService.findTotalRevenueForPeriod(start,end);
+
         int ordersTotal = orderService.findOrdersInTimeRange(start,end).size();
         dailyReportService.saveDailyReport(new DailyReportServiceModel(revenue,ordersTotal,LocalDate.now()));
     }
