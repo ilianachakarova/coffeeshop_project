@@ -4,6 +4,7 @@ import com.chakarova.demo.model.service.DailyReportServiceModel;
 import com.chakarova.demo.service.DailyReportService;
 import com.chakarova.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
+@EnableScheduling
 public class DailyReportScheduler {
     private final OrderService orderService;
     private final DailyReportService dailyReportService;
@@ -20,7 +22,7 @@ public class DailyReportScheduler {
         this.orderService = orderService;
         this.dailyReportService = dailyReportService;
     }
-    @Scheduled(cron = "0 0 0 * * ?") //every day
+   @Scheduled(cron = "0 0 0 * * ?") //every day
     // @Scheduled(cron = "0 * * ? * *") //test
     public void saveDailyReport(){
         LocalDateTime start = LocalDateTime.now().minusDays(1);

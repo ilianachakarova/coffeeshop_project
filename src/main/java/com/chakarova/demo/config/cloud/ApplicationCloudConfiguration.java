@@ -10,11 +10,11 @@ import java.util.HashMap;
 @Configuration
 public class ApplicationCloudConfiguration {
 
-    @Value("${cloudinary.cloud-name}")
+    @Value("dhsy6gihs")
     private String cloudApiName;
-    @Value("${cloudinary.api-key}")
+    @Value("274542182695572")
     private String cloudApiKey;
-    @Value("${cloudinary.api-secret}")
+    @Value("zjjK7ZtpcB1GK4OR2OxAmqAr7x4")
     private String cloudApiSecret;
 
     @Bean
