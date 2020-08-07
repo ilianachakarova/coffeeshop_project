@@ -92,7 +92,7 @@ public class AdminController {
         return "redirect:/admin/all-users";
     }
 
-    @GetMapping("product/details/{id}")
+    @GetMapping("/product/details/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
     public ModelAndView showDetails(@PathVariable("id") Long id, ModelAndView modelAndView) {
 
@@ -105,7 +105,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    @GetMapping("product/update/{id}")
+    @GetMapping("/product/update/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
     public ModelAndView updateProduct(@PathVariable("id") Long id, ModelAndView modelAndView, Principal principal) {
         modelAndView.addObject("username", principal.getName());
@@ -117,7 +117,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    @PostMapping("product/details/{id}")
+    @PostMapping("/product/details/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
     public String updateProduct(@PathVariable("id") Long id, @ModelAttribute("productAddBindingModel") ProductAddBindingModel productAddBindingModel, BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
@@ -127,13 +127,13 @@ public class AdminController {
             return "redirect:/product/details/{id}";
         }
         this.productService.updateProduct(productAddBindingModel);
-        return "redirect:/home";
+        return "redirect:/products/all-products-admin";
     }
 
-    @GetMapping("product/delete/{id}")
+    @GetMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id) {
         this.productService.deleteProduct(id);
-        return "redirect:/home";
+        return "redirect:/products/all-products-admin";
     }
 
     @GetMapping("/revenue")

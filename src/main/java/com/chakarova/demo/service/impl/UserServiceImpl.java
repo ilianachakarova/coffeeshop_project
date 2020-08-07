@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -81,7 +82,10 @@ public class UserServiceImpl implements UserService {
         User user = this.userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("User not found"));
         user.setSalary(updateUserBindingModel.getSalary());
         user.setBonus(updateUserBindingModel.getBonus());
-        user.setAuthorities(Set.of(this.roleService.findRoleByName(updateUserBindingModel.getRole())));
+        HashSet<Role> roles  = new HashSet<>();
+        roles.add(this.roleService.findRoleByName(updateUserBindingModel.getRole()));
+        user.setAuthorities(roles);
+
         this.userRepository.save(user);
     }
 

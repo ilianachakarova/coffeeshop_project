@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 public class SalesBindingModel {
     @NotNull(message = "This field is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @PastOrPresent(message = "Birth date should be in the past")
+    @PastOrPresent(message = "date should be in the past")
     private LocalDateTime startDate;
     @NotNull(message = "This field is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @PastOrPresent(message = "Birth date should be in the past")
+    @PastOrPresent(message = "date should be in the past")
     private LocalDateTime endDate;
 
     public SalesBindingModel() {
