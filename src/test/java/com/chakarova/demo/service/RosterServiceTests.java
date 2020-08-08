@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ public class RosterServiceTests {
     }
 
     @Test
+    @DirtiesContext
     public void rosterService_addRoster_returnsCorrectValue(){
         RosterService rosterService = new RosterServiceImpl(rosterRepository,modelMapper,userService);
 
@@ -75,6 +77,7 @@ public class RosterServiceTests {
 
 
     @Test
+    @DirtiesContext
     public void rosterService_getLastRoster_returnsCorrectValue(){
         User user = new User();
         user.setUsername("test");

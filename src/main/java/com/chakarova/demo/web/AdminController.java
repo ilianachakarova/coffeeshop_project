@@ -127,13 +127,13 @@ public class AdminController {
             return "redirect:/product/details/{id}";
         }
         this.productService.updateProduct(productAddBindingModel);
-        return "redirect:/products/all-products-admin";
+        return "redirect:/home";
     }
 
     @GetMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id) {
         this.productService.deleteProduct(id);
-        return "redirect:/products/all-products-admin";
+        return "redirect:/home";
     }
 
     @GetMapping("/revenue")

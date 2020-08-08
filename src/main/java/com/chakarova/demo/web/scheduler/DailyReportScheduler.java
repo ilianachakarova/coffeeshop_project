@@ -23,7 +23,7 @@ public class DailyReportScheduler {
         this.dailyReportService = dailyReportService;
     }
    @Scheduled(cron = "0 0 0 * * ?") //every day
-    // @Scheduled(cron = "0 * * ? * *") //test
+    // @Scheduled(cron = "0 * * ? * *") //test every minute
     public void saveDailyReport(){
         LocalDateTime start = LocalDateTime.now().minusDays(1);
         LocalDateTime end = LocalDateTime.now();

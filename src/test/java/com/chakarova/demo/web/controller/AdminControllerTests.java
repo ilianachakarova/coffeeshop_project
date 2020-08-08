@@ -18,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -63,6 +64,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+    @DirtiesContext
     public void editUser_WorksCorrectlyWithValidId() throws Exception {
         User testUser = this.setUpUser();
         this.userRepository.saveAndFlush(testUser);
@@ -81,6 +83,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+    @DirtiesContext
     public void editUser_redirectsCorrectly() throws Exception {
         User testUser = this.setUpUser();
         this.userRepository.saveAndFlush(testUser);
@@ -94,6 +97,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+    @DirtiesContext
     public void delete_shouldWorkCorrectly() throws Exception {
         User testUser = this.setUpUser();
         testUser = this.userRepository.saveAndFlush(testUser);
@@ -113,6 +117,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+    @DirtiesContext
     public void productDetails_shouldWorkCorrectlyWithValidInput() throws Exception {
         Product product = setUpProduct();
         product = this.productRepository.saveAndFlush(product);
@@ -122,6 +127,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+    @DirtiesContext
     public void productUpdate_shouldWorkCorrectlyWithValidInput() throws Exception {
         Product product = setUpProduct();
         product = this.productRepository.saveAndFlush(product);
@@ -131,6 +137,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+    @DirtiesContext
     public void productUpdate_postRequestShouldWorkCorrectly() throws Exception {
         Product product = setUpProduct();
         product = this.productRepository.saveAndFlush(product);
@@ -166,6 +173,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+    @DirtiesContext
     public void deleteProduct_shouldWorkCorrectly() throws Exception {
         Product product = setUpProduct();
         product = this.productRepository.saveAndFlush(product);
@@ -175,6 +183,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+    @DirtiesContext
     public void deleteProduct_shouldRedirectCorrectly() throws Exception {
         Product product = setUpProduct();
         product = this.productRepository.saveAndFlush(product);
@@ -184,6 +193,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT","ADMIN"})
+    @DirtiesContext
     public void revenue_shouldReturnCorrectView() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/admin/revenue"))
                 .andExpect(view().name("admin/sales-form"));
@@ -191,6 +201,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+    @DirtiesContext
     public void revenue_postRequestShouldReturnCorrectView() throws Exception {
         String str = "2020-08-07 11:00";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -205,6 +216,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT","ADMIN"})
+    @DirtiesContext
     public void roster_shouldReturnCorrectView() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/admin/roster"))
                 .andExpect(view().name("admin/roster-form"));
@@ -212,6 +224,7 @@ public class AdminControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT","ADMIN"})
+    @DirtiesContext
     public void roster_postRequestShouldReturnCorrectView() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post("/admin/roster")
         .param("monday","sample")

@@ -19,6 +19,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -74,6 +75,7 @@ public class UserServiceTests {
 
 
     @Test
+    @DirtiesContext
     public void userService_registerUser_returnsCorrectValueWithValidInput() {
         UserService userServiceToTest = new UserServiceImpl(this.userRepository, this.roleService, this.modelMapper, encoder);
         UserServiceModel user = new UserServiceModel();
@@ -102,6 +104,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DirtiesContext
     public void userService_findAllUsers_shouldReturnCorrectValue() {
         UserService userServiceToTest = new UserServiceImpl(this.userRepository, this.roleService, this.modelMapper, encoder);
         registerUser();
@@ -113,6 +116,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DirtiesContext
     public void userService_findUserById_ShouldWorkCorrectlyWithValidId() {
         UserService userServiceToTest = new UserServiceImpl(this.userRepository, this.roleService, this.modelMapper, encoder);
         registerUser();
@@ -125,6 +129,7 @@ public class UserServiceTests {
     }
 
     @Test(expected = Exception.class)
+    @DirtiesContext
     public void userService_findUserById_ShouldThrowExceptionWithValidId() {
         UserService userServiceToTest = new UserServiceImpl(this.userRepository, this.roleService, this.modelMapper, encoder);
         registerUser();
@@ -134,6 +139,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DirtiesContext
     public void userService_findUserByUserName_shouldWorkCorrectlyWithValidInput() {
         UserService userServiceToTest = new UserServiceImpl(this.userRepository, this.roleService, this.modelMapper, encoder);
         registerUser();
@@ -146,6 +152,7 @@ public class UserServiceTests {
     }
 
     @Test(expected = Exception.class)
+    @DirtiesContext
     public void userService_findUserByUsername_shouldThrowWithInvalidInput() {
         UserService userServiceToTest = new UserServiceImpl(this.userRepository, this.roleService, this.modelMapper, encoder);
         registerUser();
@@ -191,6 +198,7 @@ public class UserServiceTests {
 //    }
 
     @Test
+    @DirtiesContext
     public void userService_deleteUserById_shouldWorkCorrectlyWithValidInput() {
         UserService userServiceToTest = new UserServiceImpl(this.userRepository, this.roleService, this.modelMapper, encoder);
 

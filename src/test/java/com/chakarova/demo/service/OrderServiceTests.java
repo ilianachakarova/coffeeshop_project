@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.event.annotation.AfterTestMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -60,13 +62,21 @@ public class OrderServiceTests {
     private RoleService roleService;
 
     private ModelMapper modelMapper;
+    private OrderService orderServiceToTest;
 
     @Before
     public void init(){
         modelMapper = new ModelMapper();
     }
 
+    @AfterTestMethod
+    public void tearDown(){
+
+        orderServiceToTest = null;
+    }
+
     private Product setupProduct(){
+
         Product product = new Product();
         product.setId(1L);
         product.setName("sample");
@@ -104,22 +114,26 @@ public class OrderServiceTests {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_createOrder_worksProperlyWithValidInput(){
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
-
+        User user  = setUpUser();
+        user = userRepository.saveAndFlush(user);
         List<Long>productsList = new ArrayList<>();
         productsList.add(1L);
         ProductServiceModel product = this.modelMapper.map(setupProduct(), ProductServiceModel.class);
         when(productService.findProductById(anyLong())).thenReturn(product);
-
-        orderServiceToTest.createOrder(productsList,setUpUser());
+        orderServiceToTest.createOrder(productsList,user);
 
         Assert.assertEquals(orderRepository.count(),1);
         Assert.assertNotEquals((orderRepository.findAll().get(0).getProducts().get(0).getQuantity()),setupProduct().getQuantity());
+        this.userRepository.deleteAll();
+        this.orderServiceToTest = null;
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_findLastOrder_shouldReturnCorrectOrder() throws InterruptedException {
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
@@ -134,9 +148,13 @@ public class OrderServiceTests {
        Assert.assertEquals(orderRepository.findAll().get(0).getProducts().get(0).getName(),model.getProducts().get(0).getName());
        Assert.assertEquals(orderRepository.findAll().get(0).getEmployee(),model.getEmployee());
        Assert.assertEquals(orderRepository.findAll().get(0).getTimeClosed(),model.getTimeClosed());
+       this.userRepository.deleteAll();
+       this.orderServiceToTest = null;
+
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void productService_findOrdersInTimeRange_shouldWorkCorrectlyWithValidInput() throws InterruptedException {
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
@@ -154,9 +172,13 @@ public class OrderServiceTests {
         List<OrderServiceModel>orders =  orderServiceToTest.findOrdersInTimeRange(t1,t2);
 
         Assert.assertEquals(orders.size(),1);
+        userRepository.deleteAll();
+        productRepository.deleteAll();
+        orderRepository.deleteAll();
     }
 
     @Test(expected = Exception.class)
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_findOrdersInTimeRange_shouldThrowWithInvalidInput(){
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
@@ -174,6 +196,7 @@ public class OrderServiceTests {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_findTotalRevenueForPeriod_shouldWorkCorrectlyWithValidInput(){
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
@@ -191,6 +214,7 @@ public class OrderServiceTests {
         Assert.assertEquals(total,orderRepository.findAll().get(0).getTotalPrice());
     }
     @Test(expected = Exception.class)
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_findRevenueInTimeRange_shouldThrowWithInvalidInput(){
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
@@ -208,6 +232,7 @@ public class OrderServiceTests {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_findTotalRevenueForOneEmployeeForPeriod_shouldWorkCorrectlyWithValidInput(){
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
@@ -229,6 +254,7 @@ public class OrderServiceTests {
     }
 
     @Test(expected = Exception.class)
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_findTotalRevenueForOneEmployeeForPeriod_shouldThrowWithInvalidInput(){
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
@@ -248,6 +274,7 @@ public class OrderServiceTests {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_findOrderById_shouldWorkCorrectlyWithValidInput(){
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
@@ -271,6 +298,7 @@ public class OrderServiceTests {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_findRevenueByEmployee_shouldWorkCorrectly(){
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
@@ -293,6 +321,7 @@ public class OrderServiceTests {
     }
 
     @Test(expected = Exception.class)
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_findRevenueByEmployee_shouldThrowWithInvalidData(){
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);
@@ -315,6 +344,7 @@ public class OrderServiceTests {
     }
 
     @Test
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     public void orderService_findAllOrdersByEmployee_shouldWorkCorrectlyWithValidInput(){
         OrderService orderServiceToTest =
                 new OrderServiceImpl(productService,modelMapper,orderRepository,productRepository,userService);

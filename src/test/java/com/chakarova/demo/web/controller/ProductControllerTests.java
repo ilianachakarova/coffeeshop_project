@@ -37,6 +37,7 @@ public class ProductControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+
     public void add_shouldReturnCorrectView() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/product/add"))
                 .andExpect(view().name("products/product-add"));
@@ -44,6 +45,7 @@ public class ProductControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+
     public void add_shouldSaveProductInDbCorrectly() throws Exception {
         BufferedImage img;
         img = ImageIO.read(new File("src\\main\\resources\\static\\img\\coffee-shop-details.jpg"));
@@ -71,6 +73,7 @@ public class ProductControllerTests {
 
     @Test
     @WithMockUser(value = "spring",roles = {"ROOT"})
+
     public void all_shouldReturnCorrectView() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/product/all"))
                 .andExpect(view().name("products/all-products-admin"));

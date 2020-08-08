@@ -51,6 +51,7 @@ public class UserAuthControllerTests {
 
     }
     @Test
+
     public void login_returnsCorrectView() throws Exception {
         this.mvc
                 .perform(MockMvcRequestBuilders.get("/users/login"))
@@ -58,6 +59,7 @@ public class UserAuthControllerTests {
     }
 
     @Test
+
     public void register_returnsCorrectView() throws Exception {
         this.mvc
                 .perform(MockMvcRequestBuilders.get("/users/register"))
@@ -65,6 +67,7 @@ public class UserAuthControllerTests {
     }
 
     @Test
+
     public void register_shouldSaveUserInDbCorrectly() throws Exception {
         this.mvc
                 .perform(MockMvcRequestBuilders.post("/users/register")
@@ -82,6 +85,7 @@ public class UserAuthControllerTests {
     }
 
     @Test
+
     public void register_shouldRedirectCorrectly() throws Exception {
         this.mvc
                 .perform(MockMvcRequestBuilders.post("/users/register")
