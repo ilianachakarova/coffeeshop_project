@@ -39,7 +39,10 @@ public class CanvasjsChartController {
 
         List<DailyReportServiceModel>reports = this.dailyReportService.findAllReports();
         for (DailyReportServiceModel report : reports) {
-            map = new HashMap<Object,Object>(); map.put("x",report.getDate().getDayOfMonth()); map.put("y", report.getRevenue()); list.add(map);
+            map = new HashMap<Object,Object>();
+            map.put("x",report.getDate().getDayOfMonth());
+            map.put("y", report.getRevenue());
+            list.add(map);
         }
 
         String dataPoints = gsonObj.toJson(list);
