@@ -23,8 +23,36 @@
 
             <h2 class="h2 text-center text-light">𝓒𝓸𝓯𝓯𝓮𝓮 𝓲𝓼 𝓵𝓲𝓯𝓮</h2>
             <hr class="my-3"/>
-        <h3 class="text-center text-light"><a th:href="@{/users/login}">Login from here and let's get to work</a></h3>
+        <h3 class="text-center text-light">Please read the instructions first</h3>
+        <!-- Flexbox container for aligning the toasts -->
+        <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
 
+            <!-- Then put toasts within -->
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header text-danger" style="background-color: beige">
+                    <strong class="mr-auto text-center">Instructions</strong>
+
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="toast-body" style="background-color: beige">
+                    To check out the ADMIN functionality, use the following credentials:
+                    <br>
+                    username:admin
+                    <br>
+                    password:admin
+                    <br>
+                    To check out the USER functionality, use the following credentials:
+                    <br>
+                    username:employee1
+                    <br>
+                    password:123456
+                    <br>
+                    OR register a new user
+                </div>
+            </div>
+        </div>
 
         <th:block th:include="~{fragments/footer}"></th:block>
     </div>
