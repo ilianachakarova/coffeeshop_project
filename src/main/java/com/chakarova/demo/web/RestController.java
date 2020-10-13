@@ -31,7 +31,6 @@ public class RestController {
     public RestController(ProductService productService, OrderService orderService, UserService userService) {
         this.productService = productService;
         this.orderService = orderService;
-
         this.userService = userService;
     }
 
