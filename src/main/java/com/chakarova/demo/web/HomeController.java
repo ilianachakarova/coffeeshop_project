@@ -19,4 +19,10 @@ public class HomeController {
         modelAndView.setViewName("home");
         return modelAndView;
     }
+
+    @GetMapping("/contacts")
+    public ModelAndView contacts(ModelAndView modelAndView){
+        modelAndView.setViewName("contacts");
+        return modelAndView;
+    }
 }

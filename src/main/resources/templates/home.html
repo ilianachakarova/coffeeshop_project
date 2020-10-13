@@ -17,23 +17,26 @@
     <th:block sec:authorize="hasAnyRole('ROLE_ADMIN')">
         <th:block th:include="~{fragments/admin-navbar}"></th:block>
     </th:block>
-    <div class="container mt-lg-5  bg-transparent h-100">
-        <div class="row mb-3 mx-auto">
-            <div class='button-holder mt-5'>
-                <button id='fetch-button-hot' class='btn btn-info justify-content-center'>Hot Drinks Menu</button>
-                <button id='fetch-button-cold' class='btn btn-info justify-content-center'>Cold Drinks Menu</button>
-                <button id='fetch-button-snack' class='btn btn-info justify-content-center'>Snacks Menu</button>
-                <button id='fetch-button-cake' class='btn btn-info justify-content-center'>Cakes Menu</button>
-                <button id='clear-button' class='btn btn-secondary'>Clear Data</button>
+    <th:block sec:authorize="hasAnyRole('ROLE_USER')">
+        <div class="container mt-lg-5  bg-transparent h-100">
+            <div class="row mb-3 mx-auto">
+                <div class='button-holder mt-5'>
+                    <button id='fetch-button-hot' class='btn btn-info justify-content-center'>Hot Drinks Menu</button>
+                    <button id='fetch-button-cold' class='btn btn-info justify-content-center'>Cold Drinks Menu</button>
+                    <button id='fetch-button-snack' class='btn btn-info justify-content-center'>Snacks Menu</button>
+                    <button id='fetch-button-cake' class='btn btn-info justify-content-center'>Cakes Menu</button>
+                    <button id='clear-button' class='btn btn-secondary'>Clear Data</button>
 
-            </div>
-            <div id="cont" class='data-container mt-2'>
-                <table id="table-id" style="display: none"  class="table table-hover w-100 text-center align-content-center table-custom">
+                </div>
+                <div id="cont" class='data-container mt-2'>
+                    <table id="table-id" style="display: none"  class="table table-hover w-100 text-center align-content-center table-custom">
 
 
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
+    </th:block>
 
         <div class="row tm-content-row tm-mt-big">
 
@@ -56,7 +59,11 @@
             </div>
             <div class="tm-col tm-col-small">
                 <div class="bg-white tm-block h-100">
-                    <div id="googleGauge" style="width: 100%; height: 100%;"></div>
+                    <h4 th:class="text-dark">Important Contacts</h4>
+                    <a th:href="@{/contacts}">
+                        <img src="img/contacts.jpg" class="img-thumbnail">
+                    </a>
+
                 </div>
             </div>
 

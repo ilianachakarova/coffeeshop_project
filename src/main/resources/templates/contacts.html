@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
+
+<body>
+<div class="container ">
+
+    <th:block th:include="~{fragments/admin-navbar}"></th:block>
+    <div class="container-fluid">
+        <main class="mt-3">
+            <h1 class="text-center text-dark">Contacts</h1>
+            <hr class="hr-2 bg-dark w-75">
+            <table class="table table-hover w-75 mx-auto table-custom">
+                <thead>
+                <tr class="row mx-auto">
+
+                    <th class="col-md-3 text-center">Company</th>
+                    <th class="col-md-3 text-center">Representative</th>
+                    <th class="col-md-3 text-center">Phone number></th>
+                    <th class="col-md-3 text-center">Email</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                    <tr class="row mx-auto">
+
+                        <td class="col-md-3 text-center">Drinks Delivery</td>
+                        <td class="col-md-3 text-center">Jake</td>
+                        <td class="col-md-3 text-center">+1 550 552155055</td>
+                        <td class="col-md-3 text-center">drinksdelivery@mail.us</td>
+
+                        </td>
+                    </tr>
+                </th:block>
+
+
+                </tbody>
+            </table>
+            <hr class="hr-2 bg-dark">
+        </main>
+    </div>
+    <th:block th:include="~{fragments/footer}"></th:block>
+</div>
+
+</body>
+
+</html>
